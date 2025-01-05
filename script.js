@@ -12,10 +12,23 @@ document.getElementById('checkButton').addEventListener('click', async () => {
   const discordPromoPattern = /^https:\/\/discord\.com\/billing\/promotions\/[a-zA-Z0-9]+$/;
 
   promoLinks.forEach(link => {
-    setTimeout(() => {
+    setTimeout(async () => {
       let status = discordPromoPattern.test(link) ? 'Valid ✅' : 'Inválid ❌';
       resultDiv.innerHTML += `${link} - ${status}<br>`;
       resultDiv.innerHTML += '------------------------------------------------<br>';
+
+      if (discordPromoPattern.test(link)) {
+        try {
+          const response = await fetch(link);
+          if (response.ok) {
+            resultDiv.innerHTML += `${link} - Valid ✅<br>`;
+          } else {
+            resultDiv.innerHTML += `${link} - Inválid ❌<br>`;
+          }
+        } catch (e) {
+          resultDiv.innerHTML += `${link} - Inválid ❌<br>`;
+        }
+      }
     }, 2000);
   });
 });
