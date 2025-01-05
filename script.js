@@ -7,16 +7,14 @@ document.getElementById('checkButton').addEventListener('click', async () => {
     return;
   }
 
-  resultDiv.innerHTML = 'Verificando...<br>'; // Exibe o processo de verificação
+  resultDiv.innerHTML = 'Verificando...<br><br>'; // Exibe o processo de verificação
 
   // Simulação de verificação para cada link
   promoLinks.forEach(link => {
     setTimeout(() => {
-      if (link.includes("discord")) {
-        resultDiv.innerHTML += `${link} - Valid ✅<br>`;
-      } else {
-        resultDiv.innerHTML += `${link} - Inválido ❌<br>`;
-      }
+      let status = link.includes("discord") ? 'Valid ✅' : 'Inválid ❌';
+      resultDiv.innerHTML += `${link} - ${status}<br>`;
+      resultDiv.innerHTML += '------------------------------------------------<br>';  // Linha separadora
     }, 2000);  // Simulação de tempo de verificação
   });
 });
