@@ -20,9 +20,14 @@ document.getElementById('checkButton').addEventListener('click', async () => {
   
   promoLinks.forEach(link => {
     setTimeout(() => {
-      if (link.includes("discord")) {
-        results += `<p class="valid">✅ ${link} - Válido</p>`;
-      } else {
+      try {
+        const url = new URL(link);
+        if (url.protocol === 'https:' || url.protocol === 'http:') {
+          results += `<p class="valid">✅ ${link} - Válido</p>`;
+        } else {
+          results += `<p class="invalid">❌ ${link} - Inválido</p>`;
+        }
+      } catch (e) {
         results += `<p class="invalid">❌ ${link} - Inválido</p>`;
       }
 
