@@ -1,34 +1,32 @@
 document.getElementById('checkButton').addEventListener('click', async () => {
-  const promoLinks = document.getElementById('promoLink').value.trim().split('\n');
+  const promoLinksText = document.getElementById('promoLinks').value.trim();
   const resultDiv = document.getElementById('result');
-  
-  if (promoLinks.length === 0 || promoLinks[0] === '') {
-    resultDiv.textContent = 'Por favor, insira ao menos um link.';
+
+  if (!promoLinksText) {
+    resultDiv.textContent = 'Por favor, insira alguns links.';
     return;
   }
 
-  resultDiv.innerHTML = 'Verificando...<br><br>';
+  const promoLinks = promoLinksText.split('\n').map(link => link.trim()).filter(link => link);
 
-  const discordPromoPattern = /^https:\/\/discord\.com\/billing\/promotions\/[a-zA-Z0-9]+$/;
+  if (promoLinks.length === 0) {
+    resultDiv.textContent = 'Por favor, insira links válidos.';
+    return;
+  }
 
+  resultDiv.textContent = 'Verificando...';
+
+  let results = '';
+  
   promoLinks.forEach(link => {
-    setTimeout(async () => {
-      let status = discordPromoPattern.test(link) ? 'Valid ✅' : 'Inválid ❌';
-      resultDiv.innerHTML += `${link} - ${status}<br>`;
-      resultDiv.innerHTML += '------------------------------------------------<br>';
-
-      if (discordPromoPattern.test(link)) {
-        try {
-          const response = await fetch(link);
-          if (response.ok) {
-            resultDiv.innerHTML += `${link} - Valid ✅<br>`;
-          } else {
-            resultDiv.innerHTML += `${link} - Inválid ❌<br>`;
-          }
-        } catch (e) {
-          resultDiv.innerHTML += `${link} - Inválid ❌<br>`;
-        }
+    setTimeout(() => {
+      if (link.includes("discord")) {
+        results += `<p class="valid">✅ ${link} - Válido</p>`;
+      } else {
+        results += `<p class="invalid">❌ ${link} - Inválido</p>`;
       }
+
+      resultDiv.innerHTML = results;
     }, 2000);
   });
 });
