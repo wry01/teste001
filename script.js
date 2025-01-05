@@ -1,5 +1,5 @@
 document.getElementById('checkButton').addEventListener('click', async () => {
-  const promoLinks = document.getElementById('promoLink').value.trim().split('\n');  // Dividir por linha para permitir múltiplos links
+  const promoLinks = document.getElementById('promoLink').value.trim().split('\n');
   const resultDiv = document.getElementById('result');
   
   if (promoLinks.length === 0 || promoLinks[0] === '') {
@@ -7,14 +7,15 @@ document.getElementById('checkButton').addEventListener('click', async () => {
     return;
   }
 
-  resultDiv.innerHTML = 'Verificando...<br><br>'; // Exibe o processo de verificação
+  resultDiv.innerHTML = 'Verificando...<br><br>';
 
-  // Simulação de verificação para cada link
+  const discordPromoPattern = /^https:\/\/discord\.com\/billing\/promotions\/[a-zA-Z0-9]+$/;
+
   promoLinks.forEach(link => {
     setTimeout(() => {
-      let status = link.includes("discord") ? 'Valid ✅' : 'Inválid ❌';
+      let status = discordPromoPattern.test(link) ? 'Valid ✅' : 'Inválid ❌';
       resultDiv.innerHTML += `${link} - ${status}<br>`;
-      resultDiv.innerHTML += '------------------------------------------------<br>';  // Linha separadora
-    }, 2000);  // Simulação de tempo de verificação
+      resultDiv.innerHTML += '------------------------------------------------<br>';
+    }, 2000);
   });
 });
