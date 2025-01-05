@@ -9,6 +9,12 @@
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 20px;
+      background-image: url('https://cdn.discordapp.com/attachments/1320403163198521344/1323093367776608328/RIBEIRO_18.png?ex=677bd3f8&is=677a8278&hm=c76c14b141fa6fbe34eb6da9ad6375cdf9d8da35a76931dff55fdd5ee1f9ec90&');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      color: white; /* Para melhorar a visibilidade do texto sobre a imagem */
     }
     .container {
       max-width: 500px;
@@ -17,6 +23,7 @@
       border: 1px solid #ddd;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: rgba(0, 0, 0, 0.6); /* Fundo semi-transparente para melhor contraste */
     }
     input, button {
       width: 100%;
@@ -39,8 +46,8 @@
 <body>
   <div class="container">
     <h1>Checker Nitro</h1>
-    <p>Insira o link para verificar:</p>
-    <input type="text" id="promoLink" placeholder="Cole o link aqui">
+    <p>Insira os links para verificar (um por linha):</p>
+    <textarea id="promoLink" placeholder="Cole os links aqui" rows="6"></textarea>
     <button id="checkButton">Verificar</button>
     <div class="result" id="result"></div>
   </div>
