@@ -1,11 +1,13 @@
 function registrar() {
     const usuario = document.getElementById('usuario').value;
+
+    // Verifica se o campo de usuário não está vazio
     if (usuario) {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('store-container').style.display = 'block';
+        document.getElementById('overlay').style.display = 'none'; // Esconde a tela de registro
+        document.getElementById('store-container').style.display = 'block'; // Exibe a loja
         mostrarProdutos('streaming'); // Exibe produtos da categoria "Streaming" após o registro
     } else {
-        alert('Por favor, preencha todos os campos!');
+        alert('Por favor, preencha o campo de nome de usuário!');
     }
 }
 
@@ -29,7 +31,7 @@ function mostrarProdutos(categoria) {
     };
 
     const produtosContainer = document.getElementById('produtos-container');
-    produtosContainer.innerHTML = '';
+    produtosContainer.innerHTML = ''; // Limpa os produtos anteriores
 
     produtos[categoria].forEach(produto => {
         const produtoDiv = document.createElement('div');
