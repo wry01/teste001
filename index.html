@@ -1,58 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Savana Store</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Avançada</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Menu (três linhas no canto superior esquerdo) -->
-  <div class="menu">
-    <div class="linha"></div>
-    <div class="linha"></div>
-    <div class="linha"></div>
-  </div>
-
-  <!-- Seção de introdução e produtos -->
-  <div class="container">
-    <h1>Savana Store</h1>
-    <p>Explore nossos produtos e encontre o que há de melhor em tecnologia!</p>
-    
-    <!-- Produtos em destaque -->
-    <div class="produtos">
-      <div class="produto">
-        <img src="https://via.placeholder.com/200" alt="Produto 1">
-        <h2>Produto 1</h2>
-        <p>Descrição breve do produto.</p>
-        <span class="preco">R$ 99,90</span>
-        <button class="comprar">Comprar</button>
-      </div>
-      <div class="produto">
-        <img src="https://via.placeholder.com/200" alt="Produto 2">
-        <h2>Produto 2</h2>
-        <p>Descrição breve do produto.</p>
-        <span class="preco">R$ 199,90</span>
-        <button class="comprar">Comprar</button>
-      </div>
-      <div class="produto">
-        <img src="https://via.placeholder.com/200" alt="Produto 3">
-        <h2>Produto 3</h2>
-        <p>Descrição breve do produto.</p>
-        <span class="preco">R$ 149,90</span>
-        <button class="comprar">Comprar</button>
-      </div>
+    <!-- Tela de Intro e Login -->
+    <div class="overlay" id="overlay">
+        <div class="login-container">
+            <h2>Bem-vindo à nossa loja!</h2>
+            <input type="text" id="usuario" placeholder="Usuário">
+            <input type="password" id="senha" placeholder="Senha">
+            <button onclick="fazerLogin()">Entrar</button>
+        </div>
     </div>
-    
-    <!-- Botões de categoria -->
-    <div class="categorias">
-      <button class="categoria">Streaming</button>
-      <button class="categoria">Gaming</button>
-      <button class="categoria">Discord</button>
-    </div>
-  </div>
 
-  <!-- Script para interatividade -->
-  <script src="script.js"></script>
+    <!-- Tela Principal -->
+    <div class="main-content" id="main-content" style="display: none;">
+        <header>
+            <h1>Loja Avançada</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="mostrarProdutos()">Produtos</a></li>
+                    <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+                    <li><a href="https://youtube.com" target="_blank">YouTube</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div id="produtos-container"></div>
+
+        <footer>
+            <p>© 2025 Loja Avançada</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
 </body>
-  </html>
+</html>
