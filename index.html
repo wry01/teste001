@@ -1,59 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checker Nitro</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 20px;
-      background: url('https://cdn.discordapp.com/attachments/1320403163198521344/1323093367776608328/RIBEIRO_18.png?ex=677bd3f8&is=677a8278&hm=c76c14b141fa6fbe34eb6da9ad6375cdf9d8da35a76931dff55fdd5ee1f9ec90') no-repeat center center fixed;
-      background-size: cover;
-      height: 100vh;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      background: rgba(255, 255, 255, 0.8); /* Fundo semitransparente */
-    }
-    textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    button {
-      background-color: #28a745;
-      color: white;
-      font-weight: bold;
-    }
-    .result {
-      margin-top: 20px;
-      font-size: 1.2em;
-    }
-    .valid {
-      color: green;
-    }
-    .invalid {
-      color: red;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Loja Online</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Checker Nitro</h1>
-    <p>Insira os links para verificar (um por linha):</p>
-    <textarea id="promoLinks" placeholder="Cole os links aqui" rows="10"></textarea>
-    <button id="checkButton">Verificar</button>
-    <div class="result" id="result"></div>
-  </div>
-  <script src="script.js"></script>
+    <header>
+        <h1>Loja Online Super Foda</h1>
+    </header>
+    <main>
+        <section id="produtos">
+            <h2>Produtos</h2>
+            <div class="produto" data-nome="Produto 1" data-preco="50">
+                <h3>Produto 1</h3>
+                <p>Preço: R$ 50,00</p>
+                <button class="adicionar">Adicionar ao Carrinho</button>
+            </div>
+            <div class="produto" data-nome="Produto 2" data-preco="75">
+                <h3>Produto 2</h3>
+                <p>Preço: R$ 75,00</p>
+                <button class="adicionar">Adicionar ao Carrinho</button>
+            </div>
+            <div class="produto" data-nome="Produto 3" data-preco="100">
+                <h3>Produto 3</h3>
+                <p>Preço: R$ 100,00</p>
+                <button class="adicionar">Adicionar ao Carrinho</button>
+            </div>
+        </section>
+        <section id="carrinho">
+            <h2>Carrinho</h2>
+            <ul id="itens-carrinho"></ul>
+            <p id="total">Total: R$ 0,00</p>
+            <button id="finalizar-compra">Finalizar Compra</button>
+        </section>
+    </main>
+    <script src="script.js"></script>
 </body>
 </html>
