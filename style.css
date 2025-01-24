@@ -1,98 +1,40 @@
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: url('https://photos.app.goo.gl/5nKbTDdMfCkhXL1s8') no-repeat center center fixed;
+  margin: 0;
+  padding: 0;
+  background: url('https://source.unsplash.com/1920x1080/?shopping') no-repeat center center fixed;
   background-size: cover;
   color: #fff;
 }
 
-.header {
-  text-align: center;
-  padding: 50px;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.products {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 50px 0;
-}
-
-.product {
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.product:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-}
-
-.buy-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background: #00b894;
-  border: none;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s;
-}
-
-.buy-button:hover {
-  background: #01956d;
-}
-
-footer {
+header {
   text-align: center;
   padding: 20px;
   background: rgba(0, 0, 0, 0.7);
 }
 
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+main {
+  margin: 20px auto;
+  max-width: 800px;
 }
 
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
+.produto {
+  background: rgba(255, 255, 255, 0.8);
   color: #000;
-  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
-#confirm-purchase, #cancel-purchase {
-  margin: 10px;
+button {
   padding: 10px 20px;
+  background-color: #4CAF50;
   border: none;
+  color: white;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
 }
 
-#confirm-purchase {
-  background: #00b894;
-  color: #fff;
+button:hover {
+  background-color: #45a049;
 }
-
-#cancel-purchase {
-  background: #e74c3c;
-  color: #fff;
-  }
