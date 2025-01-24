@@ -3,47 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Savana Store</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://sdk.mercadopago.com/js/v2"></script>
+  <title>Savana Vendas</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="header">
+  <header>
     <h1>Savana Store</h1>
-    <p>Os melhores produtos com pagamento seguro via Pix</p>
-  </div>
-  <div class="products">
-    <div class="product">
-      <h2>Produto 1</h2>
-      <p>Descrição breve do produto.</p>
-      <span>R$ 50,00</span>
-      <button class="buy-button" data-price="50" data-title="Produto 1">Comprar</button>
+  </header>
+  <main>
+    <div id="produtos">
+      <div class="produto">
+        <h2>Produto 1</h2>
+        <p>Descrição do produto.</p>
+        <span class="preco">R$ 49,90</span>
+        <button class="comprar" data-id="produto1">Comprar</button>
+      </div>
     </div>
-    <div class="product">
-      <h2>Produto 2</h2>
-      <p>Descrição breve do produto.</p>
-      <span>R$ 100,00</span>
-      <button class="buy-button" data-price="100" data-title="Produto 2">Comprar</button>
-    </div>
-  </div>
-  <div id="confirmation-modal" class="modal hidden">
-    <div class="modal-content">
-      <h2>Confirmar Compra</h2>
-      <p id="product-info"></p>
-      <button id="confirm-purchase">Confirmar</button>
-      <button id="cancel-purchase">Cancelar</button>
-    </div>
-  </div>
-  <div id="pix-info" class="modal hidden">
-    <div class="modal-content">
-      <h2>Pagamento via Pix</h2>
-      <p>Chave Pix: <span id="pix-key"></span></p>
-      <p>Aguarde a confirmação do pagamento...</p>
-    </div>
-  </div>
-  <footer>
-    <p>Savana Store © 2025 - Todos os direitos reservados</p>
-  </footer>
+    <div id="mensagem"></div>
+  </main>
   <script src="script.js"></script>
 </body>
 </html>
