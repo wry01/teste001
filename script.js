@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalElement = document.getElementById("total");
     const btnFinalizarCompra = document.getElementById("finalizar-compra");
 
-    // Adicionar produto ao carrinho
     produtos.forEach(produto => {
         produto.querySelector(".adicionar").addEventListener("click", () => {
             const nome = produto.getAttribute("data-nome");
@@ -15,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Atualizar a lista de itens no carrinho
     function atualizarCarrinho() {
         listaCarrinho.innerHTML = "";
         let total = 0;
@@ -37,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
         totalElement.textContent = `Total: R$ ${total.toFixed(2)}`;
     }
 
-    // Finalizar compra
     btnFinalizarCompra.addEventListener("click", () => {
         if (carrinho.length === 0) {
             alert("Seu carrinho está vazio!");
