@@ -1,8 +1,9 @@
 function registrar() {
     const usuario = document.getElementById('usuario').value;
+    console.log("Botão de registrar clicado!");
 
-    // Verifica se o campo de usuário não está vazio
     if (usuario) {
+        console.log("Usuário registrado:", usuario);
         // Esconde a tela de registro e mostra a tela da loja
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('store-container').style.display = 'block';
