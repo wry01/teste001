@@ -9,8 +9,8 @@
 </head>
 <body>
   <div class="header">
-    <h1>Bem-vindo à Savana Store</h1>
-    <p>Os melhores produtos com pagamento seguro</p>
+    <h1>Savana Store</h1>
+    <p>Os melhores produtos com pagamento seguro via Pix</p>
   </div>
   <div class="products">
     <div class="product">
@@ -24,6 +24,21 @@
       <p>Descrição breve do produto.</p>
       <span>R$ 100,00</span>
       <button class="buy-button" data-price="100" data-title="Produto 2">Comprar</button>
+    </div>
+  </div>
+  <div id="confirmation-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Confirmar Compra</h2>
+      <p id="product-info"></p>
+      <button id="confirm-purchase">Confirmar</button>
+      <button id="cancel-purchase">Cancelar</button>
+    </div>
+  </div>
+  <div id="pix-info" class="modal hidden">
+    <div class="modal-content">
+      <h2>Pagamento via Pix</h2>
+      <p>Chave Pix: <span id="pix-key"></span></p>
+      <p>Aguarde a confirmação do pagamento...</p>
     </div>
   </div>
   <footer>
