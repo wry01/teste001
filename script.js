@@ -1,27 +1,40 @@
-function fazerLogin() {
+function registrar() {
     const usuario = document.getElementById('usuario').value;
+    const email = document.getElementById('email').value;
     const senha = document.getElementById('senha').value;
 
-    if (usuario && senha) {
+    if (usuario && email && senha) {
         document.getElementById('overlay').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-        carregarProdutos();
+        document.getElementById('store-container').style.display = 'block';
+        mostrarProdutos('streaming'); // Exibe produtos da categoria "Streaming" após o registro
     } else {
-        alert('Por favor, insira suas credenciais!');
+        alert('Por favor, preencha todos os campos!');
     }
 }
 
-function carregarProdutos() {
-    const produtos = [
-        { id: 1, nome: 'Produto A', descricao: 'Descrição do Produto A', preco: 50.00, estoque: 10 },
-        { id: 2, nome: 'Produto B', descricao: 'Descrição do Produto B', preco: 75.00, estoque: 5 },
-        { id: 3, nome: 'Produto C', descricao: 'Descrição do Produto C', preco: 100.00, estoque: 3 }
-    ];
+function mostrarProdutos(categoria) {
+    const produtos = {
+        streaming: [
+            { nome: 'Produto 1', descricao: 'Descrição do Produto 1', preco: 200, estoque: 10 },
+            { nome: 'Produto 2', descricao: 'Descrição do Produto 2', preco: 120, estoque: 15 },
+            { nome: 'Produto 3', descricao: 'Descrição do Produto 3', preco: 150, estoque: 8 }
+        ],
+        gaming: [
+            { nome: 'Produto 1', descricao: 'Descrição do Produto 1', preco: 150, estoque: 12 },
+            { nome: 'Produto 2', descricao: 'Descrição do Produto 2', preco: 180, estoque: 20 },
+            { nome: 'Produto 3', descricao: 'Descrição do Produto 3', preco: 210, estoque: 7 }
+        ],
+        discord: [
+            { nome: 'Produto 1', descricao: 'Descrição do Produto 1', preco: 100, estoque: 30 },
+            { nome: 'Produto 2', descricao: 'Descrição do Produto 2', preco: 90, estoque: 25 },
+            { nome: 'Produto 3', descricao: 'Descrição do Produto 3', preco: 80, estoque: 40 }
+        ]
+    };
 
     const produtosContainer = document.getElementById('produtos-container');
     produtosContainer.innerHTML = '';
 
-    produtos.forEach(produto => {
+    produtos[categoria].forEach(produto => {
         const produtoDiv = document.createElement('div');
         produtoDiv.classList.add('produto');
         produtoDiv.innerHTML = `
@@ -32,8 +45,4 @@ function carregarProdutos() {
         `;
         produtosContainer.appendChild(produtoDiv);
     });
-}
-
-function mostrarProdutos() {
-    carregarProdutos();
 }
