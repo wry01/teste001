@@ -3,24 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Savana Vendas</title>
+  <title>Savana Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
+  <!-- Menu (três linhas no canto superior esquerdo) -->
+  <div class="menu">
+    <div class="linha"></div>
+    <div class="linha"></div>
+    <div class="linha"></div>
+  </div>
+
+  <!-- Seção de introdução e produtos -->
+  <div class="container">
     <h1>Savana Store</h1>
-  </header>
-  <main>
-    <div id="produtos">
+    <p>Explore nossos produtos e encontre o que há de melhor em tecnologia!</p>
+    
+    <!-- Produtos em destaque -->
+    <div class="produtos">
       <div class="produto">
+        <img src="https://via.placeholder.com/200" alt="Produto 1">
         <h2>Produto 1</h2>
-        <p>Descrição do produto.</p>
-        <span class="preco">R$ 49,90</span>
-        <button class="comprar" data-id="produto1">Comprar</button>
+        <p>Descrição breve do produto.</p>
+        <span class="preco">R$ 99,90</span>
+        <button class="comprar">Comprar</button>
+      </div>
+      <div class="produto">
+        <img src="https://via.placeholder.com/200" alt="Produto 2">
+        <h2>Produto 2</h2>
+        <p>Descrição breve do produto.</p>
+        <span class="preco">R$ 199,90</span>
+        <button class="comprar">Comprar</button>
+      </div>
+      <div class="produto">
+        <img src="https://via.placeholder.com/200" alt="Produto 3">
+        <h2>Produto 3</h2>
+        <p>Descrição breve do produto.</p>
+        <span class="preco">R$ 149,90</span>
+        <button class="comprar">Comprar</button>
       </div>
     </div>
-    <div id="mensagem"></div>
-  </main>
+    
+    <!-- Botões de categoria -->
+    <div class="categorias">
+      <button class="categoria">Tecnologia</button>
+      <button class="categoria">Moda</button>
+      <button class="categoria">Decoração</button>
+    </div>
+  </div>
+
+  <!-- Script para interatividade -->
   <script src="script.js"></script>
 </body>
-</html>
+  </html>
