@@ -1,135 +1,161 @@
+/* Definições gerais */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Estilos para o corpo */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #111;
     color: #fff;
-    height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
+/* Tela de registro */
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://www.example.com/rays.gif') no-repeat center center/cover;
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: backgroundAnimation 5s infinite alternate;
+    z-index: 100;
 }
 
 .register-container {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 40px;
-    border-radius: 10px;
     text-align: center;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
     width: 300px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-    animation: slideIn 1s ease-out;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
 }
 
 .register-container h2 {
-    font-size: 24px;
     margin-bottom: 20px;
-    color: #ffcc00;
+    font-size: 24px;
 }
 
 .register-container input {
-    margin-bottom: 15px;
-    padding: 10px;
     width: 100%;
-    border: 1px solid #444;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
     border-radius: 5px;
     background-color: #333;
     color: #fff;
-    transition: all 0.3s;
-}
-
-.register-container input:focus {
-    border-color: #ffcc00;
-    background-color: #444;
 }
 
 .register-container button {
-    padding: 12px 20px;
-    background-color: #ffcc00;
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
     border: none;
     border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .register-container button:hover {
-    background-color: #e6b800;
+    background-color: #218838;
 }
 
+/* Fundo animado de raios */
+body {
+    background: url('https://usagif.com/wp-content/uploads/2020/06/starfall-gif-9.gif') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Tela da loja */
 .store-container {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: none;
+    padding: 40px;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 40px;
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 36px;
     margin-bottom: 20px;
-    color: #ffcc00;
 }
 
 nav a {
-    font-size: 1.2rem;
-    color: #fff;
     margin: 0 15px;
+    font-size: 20px;
+    color: #fff;
     text-decoration: none;
-    transition: color 0.3s;
 }
 
 nav a:hover {
-    color: #ffcc00;
+    color: #28a745;
 }
 
+/* Seção de produtos */
 #produtos-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
-    margin-top: 40px;
 }
 
 .produto {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 20px;
+    background-color: #222;
     border-radius: 10px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
     text-align: center;
-}
-
-footer {
-    text-align: center;
-    margin-top: 40px;
     color: #fff;
+    transition: transform 0.3s;
 }
 
-footer a {
-    color: #ffcc00;
-    text-decoration: none;
+.produto:hover {
+    transform: scale(1.05);
 }
 
-footer a:hover {
-    text-decoration: underline;
+.produto h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
 }
 
-@keyframes backgroundAnimation {
-    0% { background-position: 0 0; }
-    100% { background-position: 100% 100%; }
+.produto p {
+    margin-bottom: 15px;
+    font-size: 16px;
 }
 
-@keyframes slideIn {
-    0% { transform: translateY(-100px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
+.produto span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 16px;
+    color: #bbb;
+}
+
+footer p {
+    margin: 20px 0;
+}
+
+/* Animação de carregamento */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+body {
+    animation: fadeIn 1s ease-in-out;
 }
