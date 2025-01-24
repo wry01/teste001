@@ -1,6 +1,6 @@
 function registrar() {
     const usuario = document.getElementById('usuario').value;
-    if (usuario && email && senha) {
+    if (usuario) {
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('store-container').style.display = 'block';
         mostrarProdutos('streaming'); // Exibe produtos da categoria "Streaming" após o registro
