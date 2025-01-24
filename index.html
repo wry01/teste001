@@ -3,34 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja Avançada</title>
+    <title>Tela de Registro e Loja</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Tela de Intro e Login -->
+    <!-- Tela de Registro -->
     <div class="overlay" id="overlay">
-        <div class="login-container">
-            <h2>Bem-vindo à nossa loja!</h2>
-            <input type="text" id="usuario" placeholder="Usuário">
+        <div class="register-container">
+            <h2>Crie Sua Conta</h2>
+            <input type="text" id="usuario" placeholder="Nome de Usuário">
+            <input type="email" id="email" placeholder="Email">
             <input type="password" id="senha" placeholder="Senha">
-            <button onclick="fazerLogin()">Entrar</button>
+            <button onclick="registrar()">Registrar</button>
         </div>
     </div>
 
-    <!-- Tela Principal -->
-    <div class="main-content" id="main-content" style="display: none;">
+    <!-- Tela da Loja (após o registro) -->
+    <div class="store-container" id="store-container" style="display: none;">
         <header>
-            <h1>Loja Avançada</h1>
+            <h1>Bem-vindo à Loja!</h1>
             <nav>
-                <ul>
-                    <li><a href="#" onclick="mostrarProdutos()">Produtos</a></li>
-                    <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
-                    <li><a href="https://youtube.com" target="_blank">YouTube</a></li>
-                </ul>
+                <a href="javascript:void(0);" onclick="mostrarProdutos('streaming')">Streaming</a>
+                <a href="javascript:void(0);" onclick="mostrarProdutos('gaming')">Gaming</a>
+                <a href="javascript:void(0);" onclick="mostrarProdutos('discord')">Discord</a>
             </nav>
         </header>
 
-        <div id="produtos-container"></div>
+        <section id="produtos-container"></section>
 
         <footer>
             <p>© 2025 Loja Avançada</p>
