@@ -3,9 +3,10 @@ function registrar() {
 
     // Verifica se o campo de usuário não está vazio
     if (usuario) {
-        document.getElementById('overlay').style.display = 'none'; // Esconde a tela de registro
-        document.getElementById('store-container').style.display = 'block'; // Exibe a loja
-        mostrarProdutos('streaming'); // Exibe produtos da categoria "Streaming" após o registro
+        // Esconde a tela de registro e mostra a tela da loja
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('store-container').style.display = 'block';
+        mostrarProdutos('streaming'); // Exibe produtos da categoria "Streaming"
     } else {
         alert('Por favor, preencha o campo de nome de usuário!');
     }
