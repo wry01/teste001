@@ -1,8 +1,5 @@
 function registrar() {
     const usuario = document.getElementById('usuario').value;
-    const email = document.getElementById('email').value;
-    const senha = document.getElementById('senha').value;
-
     if (usuario && email && senha) {
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('store-container').style.display = 'block';
