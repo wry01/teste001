@@ -1,41 +1,34 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Loja Online</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savana Store</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 <body>
-    <header>
-        <h1>Mantém Store</h1>
-    </header>
-    <main>
-        <section id="produtos">
-            <h2>Produtos</h2>
-            <div class="produto" data-nome="Produto 1" data-preco="50">
-                <h3>Produto 1</h3>
-                <p>Preço: R$ 50,00</p>
-                <button class="adicionar">Adicionar ao Carrinho</button>
-            </div>
-            <div class="produto" data-nome="Produto 2" data-preco="75">
-                <h3>Produto 2</h3>
-                <p>Preço: R$ 75,00</p>
-                <button class="adicionar">Adicionar ao Carrinho</button>
-            </div>
-            <div class="produto" data-nome="Produto 3" data-preco="100">
-                <h3>Produto 3</h3>
-                <p>Preço: R$ 100,00</p>
-                <button class="adicionar">Adicionar ao Carrinho</button>
-            </div>
-        </section>
-        <section id="carrinho">
-            <h2>Carrinho</h2>
-            <ul id="itens-carrinho"></ul>
-            <p id="total">Total: R$ 0,00</p>
-            <button id="finalizar-compra">Finalizar Compra</button>
-        </section>
-    </main>
-    <script src="script.js"></script>
+  <div class="header">
+    <h1>Bem-vindo à Savana Store</h1>
+    <p>Os melhores produtos com pagamento seguro</p>
+  </div>
+  <div class="products">
+    <div class="product">
+      <h2>Produto 1</h2>
+      <p>Descrição breve do produto.</p>
+      <span>R$ 50,00</span>
+      <button class="buy-button" data-price="50" data-title="Produto 1">Comprar</button>
+    </div>
+    <div class="product">
+      <h2>Produto 2</h2>
+      <p>Descrição breve do produto.</p>
+      <span>R$ 100,00</span>
+      <button class="buy-button" data-price="100" data-title="Produto 2">Comprar</button>
+    </div>
+  </div>
+  <footer>
+    <p>Savana Store © 2025 - Todos os direitos reservados</p>
+  </footer>
+  <script src="script.js"></script>
 </body>
 </html>
