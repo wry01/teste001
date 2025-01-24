@@ -164,7 +164,6 @@ footer {
 footer p {
   margin: 20px 0;
 }
-
 /* Animação de carregamento */
 @keyframes fadeIn {
   0% {
@@ -172,5 +171,23 @@ footer p {
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* Estilo para as partículas de neve */
+.snowflake {
+  position: absolute;
+  top: -10px; /* Começa fora da tela */
+  color: white;
+  animation: fall linear infinite; /* Animação da queda */
+}
+
+/* Animação para as partículas */
+@keyframes fall {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100vh); /* Cai até fora da tela */
   }
 }
