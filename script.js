@@ -1,49 +1,36 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const carrinho = [];
-    const produtos = document.querySelectorAll(".produto");
-    const listaCarrinho = document.getElementById("itens-carrinho");
-    const totalElement = document.getElementById("total");
-    const btnFinalizarCompra = document.getElementById("finalizar-compra");
+const mp = new MercadoPago('SUA_PUBLIC_KEY', { locale: 'pt-BR' });
 
-    produtos.forEach(produto => {
-        produto.querySelector(".adicionar").addEventListener("click", () => {
-            const nome = produto.getAttribute("data-nome");
-            const preco = parseFloat(produto.getAttribute("data-preco"));
-            carrinho.push({ nome, preco });
-            atualizarCarrinho();
-        });
-    });
+document.querySelectorAll('.buy-button').forEach(button => {
+  button.addEventListener('click', async () => {
+    const title = button.getAttribute('data-title');
+    const price = button.getAttribute('data-price');
 
-    function atualizarCarrinho() {
-        listaCarrinho.innerHTML = "";
-        let total = 0;
-
-        carrinho.forEach((item, index) => {
-            const li = document.createElement("li");
-            li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)}`;
-            const btnRemover = document.createElement("button");
-            btnRemover.textContent = "Remover";
-            btnRemover.addEventListener("click", () => {
-                carrinho.splice(index, 1);
-                atualizarCarrinho();
-            });
-            li.appendChild(btnRemover);
-            listaCarrinho.appendChild(li);
-            total += item.preco;
-        });
-
-        totalElement.textContent = `Total: R$ ${total.toFixed(2)}`;
-    }
-
-    btnFinalizarCompra.addEventListener("click", () => {
-        if (carrinho.length === 0) {
-            alert("Seu carrinho está vazio!");
-            return;
+    const preference = {
+      items: [
+        {
+          title: title,
+          quantity: 1,
+          currency_id: 'BRL',
+          unit_price: parseFloat(price)
         }
+      ]
+    };
 
-        const resumo = carrinho.map(item => `${item.nome} - R$ ${item.preco.toFixed(2)}`).join("\n");
-        alert(`Compra finalizada com sucesso!\n\nResumo:\n${resumo}\n\nTotal: R$ ${carrinho.reduce((acc, item) => acc + item.preco, 0).toFixed(2)}`);
-        carrinho.length = 0;
-        atualizarCarrinho();
+    const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer SEU_ACCESS_TOKEN',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(preference)
     });
+
+    const data = await response.json();
+
+    mp.checkout({
+      preference: {
+        id: data.id
+      }
+    }).open();
+  });
 });
