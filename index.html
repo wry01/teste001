@@ -16,7 +16,6 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      position: relative;
     }
 
     #video-background {
@@ -36,7 +35,6 @@
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
       width: 80%;
       max-width: 600px;
-      position: relative;
     }
 
     h1 {
@@ -54,7 +52,6 @@
       cursor: pointer;
       font-size: 16px;
       border-radius: 5px;
-      margin: 0 10px;
     }
 
     input {
@@ -63,8 +60,6 @@
       font-size: 16px;
       border-radius: 5px;
       border: 1px solid #ccc;
-      display: block;
-      margin: 10px auto;
     }
 
     .error-message {
@@ -110,36 +105,6 @@
       border-radius: 5px;
       color: white;
     }
-
-    /* Estilo para a aba modal */
-    #campo-registro,
-    #campo-login {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(128, 128, 128, 0.8); /* Fundo cinza semi-transparente */
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-      z-index: 1000; /* Garante que a aba fique acima do vídeo */
-      width: 80%;
-      max-width: 600px;
-    }
-
-    /* O fundo para cobrir o restante da tela */
-    #fundo-escuro {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
-      z-index: 999; /* Fica atrás da aba de registro */
-      display: none; /* Inicialmente oculto */
-    }
-
   </style>
 </head>
 <body>
@@ -147,36 +112,20 @@
     <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
 
-    <!-- Botões lado a lado -->
-    <div class="botao-container">
-      <button onclick="mostrarCampoRegistro()">Registrar-se</button>
-      <button onclick="mostrarCampoLogin()">Login</button>
-    </div>
+    <button onclick="mostrarCampoRegistro()">Registrar</button>
+    <button onclick="mostrarCampoLogin()">Entrar</button>
 
     <!-- Campo para o registro -->
-    <div id="fundo-escuro"></div> <!-- Fundo escuro -->
-    <div id="campo-registro">
-      <h2>Se Registre</h2>
-      <div id="etapa-nick">
-        <input type="text" id="nick-usuario" placeholder="Digite seu Nick de Usuário">
-        <button onclick="mostrarCampoEmail()">Próximo</button>
-      </div>
-
-      <div id="etapa-email" style="display:none;">
-        <input type="email" id="email-usuario" placeholder="Digite seu E-mail">
-        <button onclick="mostrarCampoSenha()">Próximo</button>
-      </div>
-
-      <div id="etapa-senha" style="display:none;">
-        <input type="password" id="senha-usuario" placeholder="Digite sua Senha">
-        <button onclick="registrar()">Registrar-se</button>
-      </div>
+    <div id="campo-registro" style="display:none;">
+      <input type="text" id="nick-usuario" placeholder="Digite seu Nick de Usuário">
+      <input type="email" id="email-usuario" placeholder="Digite seu E-mail">
+      <input type="password" id="senha-usuario" placeholder="Digite sua Senha">
+      <button onclick="registrar()">Registrar</button>
       <p id="mensagem-registro" class="error-message" style="display:none;"></p>
     </div>
 
     <!-- Campo para o login -->
-    <div id="campo-login">
-      <h2>Login</h2>
+    <div id="campo-login" style="display:none;">
       <input type="text" id="nick-usuario-login" placeholder="Digite seu Nick de Usuário">
       <input type="password" id="senha-usuario-login" placeholder="Digite sua Senha">
       <button onclick="login()">Entrar</button>
@@ -203,31 +152,9 @@
 
   <script>
     const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+    const usuariosEspeciais = ['mickzada', 'italo', 'vitor', 'wry'];
 
     let usuarioLogado = null;
-
-    // Função para mostrar o campo de registro (etapa 1 - Nick)
-    function mostrarCampoRegistro() {
-      document.getElementById('campo-registro').style.display = 'block';
-      document.getElementById('fundo-escuro').style.display = 'block'; // Exibe o fundo escuro
-      document.getElementById('content').style.display = 'none'; // Esconde o conteúdo principal
-    }
-
-    function mostrarCampoEmail() {
-      const nick = document.getElementById('nick-usuario').value.trim();
-      if (nick.length > 0) {
-        document.getElementById('etapa-nick').style.display = 'none';
-        document.getElementById('etapa-email').style.display = 'block';
-      }
-    }
-
-    function mostrarCampoSenha() {
-      const email = document.getElementById('email-usuario').value.trim();
-      if (email.length > 0) {
-        document.getElementById('etapa-email').style.display = 'none';
-        document.getElementById('etapa-senha').style.display = 'block';
-      }
-    }
 
     // Função para registrar o usuário
     function registrar() {
@@ -250,13 +177,20 @@
         email: email,
         senha: senha,
         dataEntrada: new Date().toLocaleString(),
-        token: gerarToken(),
-        tag: 'membro' // Todos os usuários registrados terão a tag 'membro'
+        token: gerarToken()
       };
+
+      // Adicionar tags para administradores/donos
+      if (usuariosEspeciais.includes(nick.toLowerCase())) {
+        novoUsuario.tag = 'admin'; // Pode ser 'admin' ou 'dono', conforme o caso
+      } else {
+        novoUsuario.tag = 'membro';
+      }
 
       usuariosRegistrados.push(novoUsuario);
       localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
       alert('Registro realizado com sucesso!');
+      document.getElementById('campo-registro').style.display = 'none';
       mostrarCampoLogin();
     }
 
@@ -269,7 +203,7 @@
     function mostrarCampoLogin() {
       document.getElementById('campo-login').style.display = 'block';
       document.getElementById('campo-registro').style.display = 'none';
-      document.getElementById('fundo-escuro').style.display = 'none'; // Esconde o fundo escuro
+      document.getElementById('bem-vindo').style.display = 'none';
     }
 
     // Função para login
@@ -297,8 +231,29 @@
 
       // Exibir o token e as tags
       const userTokenElement = document.getElementById('user-token');
-      userTokenElement.textContent = `Token: ${usuarioLogado.token} | Tag: ${usuarioLogado.tag}`;
+      userTokenElement.textContent = Token: ${usuarioLogado.token} | Tag: ${usuarioLogado.tag};
     }
+
+    // Função para mostrar registros de login
+    function mostrarRegistros() {
+      const registrosDiv = document.getElementById('registros');
+      registrosDiv.style.display = 'block';
+
+      registrosDiv.innerHTML = '<h2>Registros de Login</h2>';
+
+      usuariosRegistrados.forEach(usuario => {
+        const divRegistro = document.createElement('div');
+        divRegistro.classList.add('registro-item');
+        divRegistro.innerHTML = 
+          <strong>Nome:</strong> ${usuario.nick} <br>
+          <strong>Email:</strong> ${usuario.email} <br>
+          <strong>Token:</strong> ${usuario.token} <br>
+          <strong>Data/Hora:</strong> ${usuario.dataEntrada} <br>
+        ;
+        registrosDiv.appendChild(divRegistro);
+      });
+    }
+
   </script>
 </body>
 </html>
