@@ -15,7 +15,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      overflow: hidden; /* Para garantir que o vídeo de fundo não crie barras de rolagem */
+      overflow: hidden;
     }
 
     #video-background {
@@ -25,12 +25,12 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: -1; /* Para que o vídeo fique atrás do conteúdo */
+      z-index: -1;
     }
 
     #content {
       padding: 30px;
-      background-color: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente para contraste */
+      background-color: rgba(0, 0, 0, 0.7);
       border-radius: 15px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
       width: 80%;
@@ -115,25 +115,38 @@
   <div id="content">
     <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
-    
-    <button onclick="mostrarCampoNome()">Entrar como Usuário</button>
 
-    <!-- Campo para o nome do usuário, inicialmente oculto -->
-    <div id="campo-nome" style="display:none;">
-      <input type="text" id="nome-usuario" placeholder="Digite seu nome de usuário">
+    <button onclick="mostrarCampoLogin()">Entrar como Usuário</button>
+
+    <!-- Campo para o login -->
+    <div id="campo-login" style="display:none;">
+      <input type="email" id="email-usuario" placeholder="Digite seu e-mail">
       <input type="password" id="senha-usuario" placeholder="Digite sua senha">
-      <button onclick="registrarOuEntrar()">Entrar</button>
+      <button onclick="login()">Entrar</button>
+      <button onclick="mostrarEsqueciSenha()">Esqueci a senha</button>
       <p id="mensagem-erro" class="error-message" style="display:none;"></p>
+    </div>
+
+    <!-- Campo para recuperação de senha -->
+    <div id="campo-recuperar-senha" style="display:none;">
+      <input type="email" id="email-recuperar" placeholder="Digite seu e-mail">
+      <input type="text" id="token-recuperar" placeholder="Digite o token">
+      <button onclick="validarToken()">Validar Token</button>
+      <p id="mensagem-token" class="error-message" style="display:none;"></p>
+      <div id="contador"></div>
+    </div>
+
+    <!-- Nova senha -->
+    <div id="campo-nova-senha" style="display:none;">
+      <input type="password" id="nova-senha" placeholder="Nova senha">
+      <input type="password" id="confirmar-senha" placeholder="Confirme sua nova senha">
+      <button onclick="atualizarSenha()">Atualizar Senha</button>
+      <p id="mensagem-senha" class="error-message" style="display:none;"></p>
     </div>
   </div>
 
-  <div id="registros">
-    <h2>Registros de Usuários</h2>
-    <div id="lista-registros"></div>
-  </div>
-
   <video id="video-background" autoplay loop muted>
-    <source src="VID-20250124-WA00121.mp4" type="video/mp4">
+    <source src="kajsbdbjkçsad.mp4" type="video/mp4">
     Seu navegador não suporta o formato de vídeo.
   </video>
 
@@ -141,60 +154,102 @@
     // Lista de usuários registrados
     const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
     const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-
-    // Usuários especiais
     const usuariosEspeciais = ['mickzada', 'italo', 'vitor', 'wry'];
 
-    // Função para mostrar o campo de nome
-    function mostrarCampoNome() {
-      if (usuarioLogado) {
-        document.getElementById('bem-vindo').textContent = `Bem-vindo de volta, ${usuarioLogado.nome}!`;
-        document.getElementById('campo-nome').style.display = 'block';
-        document.querySelector('button').textContent = 'Entrar novamente';
+    let tentativasRecuperacao = 3;
+    let timer = 0;
+
+    // Função para mostrar o campo de login
+    function mostrarCampoLogin() {
+      document.getElementById('campo-login').style.display = 'block';
+      document.querySelector('button').style.display = 'none';
+      document.getElementById('bem-vindo').style.display = 'none';
+    }
+
+    // Função para login
+    function login() {
+      const email = document.getElementById('email-usuario').value.trim().toLowerCase();
+      const senha = document.getElementById('senha-usuario').value.trim();
+      const mensagemErro = document.getElementById('mensagem-erro');
+
+      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.email === email);
+
+      if (usuarioExistente && usuarioExistente.senha === senha) {
+        localStorage.setItem('usuarioLogado', JSON.stringify(usuarioExistente));
+        iniciarPaginaProdutos();
       } else {
-        document.getElementById('campo-nome').style.display = 'block';
+        mensagemErro.textContent = 'Email ou senha incorretos!';
+        mensagemErro.style.display = 'block';
       }
     }
 
-    // Função para registrar ou permitir o login
-    function registrarOuEntrar() {
-      const nomeUsuario = document.getElementById('nome-usuario').value.trim().toLowerCase();
-      const senhaUsuario = document.getElementById('senha-usuario').value.trim();
-      const mensagemErro = document.getElementById('mensagem-erro');
+    // Função para mostrar a tela de "Esqueci a senha"
+    function mostrarEsqueciSenha() {
+      document.getElementById('campo-login').style.display = 'none';
+      document.getElementById('campo-recuperar-senha').style.display = 'block';
+    }
 
-      if (usuarioLogado) {
-        // Caso o usuário esteja logado, apenas valida o login
-        if (usuarioLogado.nome === nomeUsuario && usuarioLogado.senha === senhaUsuario) {
-          localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-          iniciarPaginaProdutos();
-        } else {
-          mensagemErro.textContent = 'Senha incorreta!';
-          mensagemErro.style.display = 'block';
-        }
+    // Função para validar o token
+    function validarToken() {
+      const email = document.getElementById('email-recuperar').value.trim().toLowerCase();
+      const token = document.getElementById('token-recuperar').value.trim();
+      const mensagemErro = document.getElementById('mensagem-token');
+
+      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.email === email);
+
+      if (!usuarioExistente) {
+        mensagemErro.textContent = 'Email não encontrado!';
+        mensagemErro.style.display = 'block';
         return;
       }
 
-      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.nome === nomeUsuario);
-
-      if (usuarioExistente) {
-        if (usuarioExistente.senha === senhaUsuario) {
-          localStorage.setItem('usuarioLogado', JSON.stringify(usuarioExistente));
-          iniciarPaginaProdutos();
+      if (token === usuarioExistente.token) {
+        document.getElementById('campo-recuperar-senha').style.display = 'none';
+        document.getElementById('campo-nova-senha').style.display = 'block';
+      } else {
+        tentativasRecuperacao--;
+        if (tentativasRecuperacao <= 0) {
+          mensagemErro.textContent = 'Você excedeu o número de tentativas. Tente novamente em 10 segundos.';
+          mensagemErro.style.display = 'block';
+          iniciarContador();
         } else {
-          mensagemErro.textContent = 'Senha incorreta!';
+          mensagemErro.textContent = `Token incorreto! Tentativas restantes: ${tentativasRecuperacao}`;
           mensagemErro.style.display = 'block';
         }
-      } else {
-        const novoUsuario = {
-          nome: nomeUsuario,
-          senha: senhaUsuario,
-          dataEntrada: new Date().toLocaleString(),
-        };
+      }
+    }
 
-        usuariosRegistrados.push(novoUsuario);
-        localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
-        localStorage.setItem('usuarioLogado', JSON.stringify(novoUsuario));
+    // Função para iniciar o contador de recuperação de senha
+    function iniciarContador() {
+      timer = 10;
+      const contadorDiv = document.getElementById('contador');
+      contadorDiv.textContent = `Tente novamente em ${timer} segundos...`;
+      const intervalo = setInterval(() => {
+        if (timer > 0) {
+          timer--;
+          contadorDiv.textContent = `Tente novamente em ${timer} segundos...`;
+        } else {
+          clearInterval(intervalo);
+          tentativasRecuperacao = 3;
+          document.getElementById('mensagem-token').style.display = 'none';
+        }
+      }, 1000);
+    }
+
+    // Função para atualizar a senha
+    function atualizarSenha() {
+      const novaSenha = document.getElementById('nova-senha').value.trim();
+      const confirmarSenha = document.getElementById('confirmar-senha').value.trim();
+      const mensagemErro = document.getElementById('mensagem-senha');
+
+      if (novaSenha === confirmarSenha) {
+        usuarioLogado.senha = novaSenha;
+        localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+        document.getElementById('campo-nova-senha').style.display = 'none';
         iniciarPaginaProdutos();
+      } else {
+        mensagemErro.textContent = 'As senhas não coincidem!';
+        mensagemErro.style.display = 'block';
       }
     }
 
@@ -203,7 +258,7 @@
       document.getElementById('bem-vindo').style.display = 'none';
       document.querySelector('p').style.display = 'none';
       document.querySelector('button').style.display = 'none';
-      document.getElementById('campo-nome').style.display = 'none';
+      document.getElementById('campo-login').style.display = 'none';
 
       const tituloProdutos = document.createElement('div');
       tituloProdutos.id = 'titulo-produtos';
@@ -220,7 +275,7 @@
       }
     }
 
-    // Função para mostrar ou esconder os registros de usuários
+    // Função para mostrar os registros de usuários
     function mostrarRegistros() {
       const registrosDiv = document.getElementById('registros');
       
@@ -237,7 +292,7 @@
           divRegistro.classList.add('registro-item');
           divRegistro.innerHTML = `
             <p>Nome: ${usuario.nome}</p>
-            <p>Senha: ${usuario.senha}</p>
+            <p>Email: ${usuario.email}</p>
             <p>Data de entrada: ${usuario.dataEntrada}</p>
           `;
 
