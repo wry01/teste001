@@ -75,7 +75,8 @@
 
     #registros {
       display: none;
-      background-color: #d3d3d3;
+      background-color: #555; /* Cinza normal */
+      color: white;
       padding: 20px;
       border-radius: 10px;
       margin-top: 20px;
@@ -85,7 +86,7 @@
     }
 
     .registro-item {
-      background-color: #ffffff;
+      background-color: #666; /* Um pouco mais claro que o fundo */
       padding: 10px;
       margin: 10px 0;
       border-radius: 5px;
@@ -207,34 +208,38 @@
       }
     }
 
-    // Função para mostrar registros de usuários
+    // Função para mostrar ou esconder os registros de usuários
     function mostrarRegistros() {
       const registrosDiv = document.getElementById('registros');
-      registrosDiv.style.display = 'block';
-      document.body.style.backgroundColor = '#d3d3d3';
+      
+      // Alterna a exibição dos registros
+      if (registrosDiv.style.display === 'block') {
+        registrosDiv.style.display = 'none'; // Fecha
+      } else {
+        registrosDiv.style.display = 'block'; // Abre
+        const listaRegistros = document.getElementById('lista-registros');
+        listaRegistros.innerHTML = '';
 
-      const listaRegistros = document.getElementById('lista-registros');
-      listaRegistros.innerHTML = '';
+        usuariosRegistrados.forEach(usuario => {
+          const divRegistro = document.createElement('div');
+          divRegistro.classList.add('registro-item');
+          divRegistro.innerHTML = `
+            <p>Nome: ${usuario.nome}</p>
+            <p>Senha: ${usuario.senha}</p>
+            <p>Data de entrada: ${usuario.dataEntrada}</p>
+          `;
 
-      usuariosRegistrados.forEach(usuario => {
-        const divRegistro = document.createElement('div');
-        divRegistro.classList.add('registro-item');
-        divRegistro.innerHTML = `
-          <p>Nome: ${usuario.nome}</p>
-          <p>Senha: ${usuario.senha}</p>
-          <p>Data de entrada: ${usuario.dataEntrada}</p>
-        `;
+          // Atribui tag de admin ou dono
+          if (usuariosEspeciais.includes(usuario.nome)) {
+            const tag = document.createElement('p');
+            tag.textContent = usuario.nome === 'italo' ? 'Tag: Dono' : 'Tag: Admin';
+            tag.classList.add(usuario.nome === 'italo' ? 'dono-tag' : 'admin-tag');
+            divRegistro.appendChild(tag);
+          }
 
-        // Atribui tag de admin ou dono
-        if (usuariosEspeciais.includes(usuario.nome)) {
-          const tag = document.createElement('p');
-          tag.textContent = usuario.nome === 'italo' ? 'Tag: Dono' : 'Tag: Admin';
-          tag.classList.add(usuario.nome === 'italo' ? 'dono-tag' : 'admin-tag');
-          divRegistro.appendChild(tag);
-        }
-
-        listaRegistros.appendChild(divRegistro);
-      });
+          listaRegistros.appendChild(divRegistro);
+        });
+      }
     }
 
   </script>
