@@ -214,11 +214,28 @@
 
       const usuarioExistente = usuariosRegistrados.find(usuario => usuario.nick === nick);
 
-      if (usuarioExistente && usuarioExistente.senha === senha) {
-        usuarioLogado = usuarioExistente;
-        iniciarPaginaProdutos();
+      if (usuarioExistente) {
+        // Verificar se o login foi realizado há mais de 100 anos
+        const dataEntrada = new Date(usuarioExistente.dataEntrada);
+        const dataAtual = new Date();
+        const anosPassados = (dataAtual - dataEntrada) / (1000 * 60 * 60 * 24 * 365);
+
+        if (anosPassados >= 100) {
+          // Redefinir login após 100 anos
+          alert('O login foi redefinido após 100 anos!');
+          usuarioExistente.dataEntrada = dataAtual.toLocaleString();
+          localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
+        }
+
+        if (usuarioExistente.senha === senha) {
+          usuarioLogado = usuarioExistente;
+          iniciarPaginaProdutos();
+        } else {
+          mensagemErro.textContent = 'Nick ou senha incorretos!';
+          mensagemErro.style.display = 'block';
+        }
       } else {
-        mensagemErro.textContent = 'Nick ou senha incorretos!';
+        mensagemErro.textContent = 'Usuário não encontrado!';
         mensagemErro.style.display = 'block';
       }
     }
@@ -244,7 +261,7 @@
       usuariosRegistrados.forEach(usuario => {
         const divRegistro = document.createElement('div');
         divRegistro.classList.add('registro-item');
-        divRegistro.innerHTML = `
+        divRegistro.innerHTML = `  
           <strong>Nome:</strong> ${usuario.nick} <br>
           <strong>Email:</strong> ${usuario.email} <br>
           <strong>Token:</strong> ${usuario.token} <br>
