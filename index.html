@@ -116,32 +116,31 @@
     <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
 
-    <button onclick="mostrarCampoLogin()">Entrar como Usuário</button>
+    <button onclick="mostrarCampoRegistro()">Registrar</button>
+    <button onclick="mostrarCampoLogin()">Entrar</button>
+
+    <!-- Campo para o registro -->
+    <div id="campo-registro" style="display:none;">
+      <input type="text" id="nick-usuario" placeholder="Digite seu Nick de Usuário">
+      <input type="email" id="email-usuario" placeholder="Digite seu E-mail">
+      <input type="password" id="senha-usuario" placeholder="Digite sua Senha">
+      <button onclick="registrar()">Registrar</button>
+      <p id="mensagem-registro" class="error-message" style="display:none;"></p>
+    </div>
 
     <!-- Campo para o login -->
     <div id="campo-login" style="display:none;">
-      <input type="email" id="email-usuario" placeholder="Digite seu e-mail">
-      <input type="password" id="senha-usuario" placeholder="Digite sua senha">
+      <input type="text" id="nick-usuario-login" placeholder="Digite seu Nick de Usuário">
+      <input type="password" id="senha-usuario-login" placeholder="Digite sua Senha">
       <button onclick="login()">Entrar</button>
-      <button onclick="mostrarEsqueciSenha()">Esqueci a senha</button>
       <p id="mensagem-erro" class="error-message" style="display:none;"></p>
     </div>
 
-    <!-- Campo para recuperação de senha -->
-    <div id="campo-recuperar-senha" style="display:none;">
-      <input type="email" id="email-recuperar" placeholder="Digite seu e-mail">
-      <input type="text" id="token-recuperar" placeholder="Digite o token">
-      <button onclick="validarToken()">Validar Token</button>
-      <p id="mensagem-token" class="error-message" style="display:none;"></p>
-      <div id="contador"></div>
-    </div>
-
-    <!-- Nova senha -->
-    <div id="campo-nova-senha" style="display:none;">
-      <input type="password" id="nova-senha" placeholder="Nova senha">
-      <input type="password" id="confirmar-senha" placeholder="Confirme sua nova senha">
-      <button onclick="atualizarSenha()">Atualizar Senha</button>
-      <p id="mensagem-senha" class="error-message" style="display:none;"></p>
+    <!-- Página de produtos -->
+    <div id="pagina-produtos" style="display:none;">
+      <div id="titulo-produtos">
+        <h2>Produtos Savana Store</h2>
+      </div>
     </div>
   </div>
 
@@ -151,163 +150,98 @@
   </video>
 
   <script>
-    // Lista de usuários registrados
     const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
     const usuariosEspeciais = ['mickzada', 'italo', 'vitor', 'wry'];
 
     let tentativasRecuperacao = 3;
     let timer = 0;
 
+    // Função para mostrar o campo de registro
+    function mostrarCampoRegistro() {
+      document.getElementById('campo-registro').style.display = 'block';
+      document.getElementById('campo-login').style.display = 'none';
+      document.getElementById('bem-vindo').style.display = 'none';
+    }
+
+    // Função para registrar o usuário
+    function registrar() {
+      const nick = document.getElementById('nick-usuario').value.trim();
+      const email = document.getElementById('email-usuario').value.trim().toLowerCase();
+      const senha = document.getElementById('senha-usuario').value.trim();
+      const mensagemErro = document.getElementById('mensagem-registro');
+
+      // Verificar se o usuário já está registrado
+      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.email === email || usuario.nick === nick);
+      if (usuarioExistente) {
+        mensagemErro.textContent = 'Usuário ou e-mail já registrado!';
+        mensagemErro.style.display = 'block';
+        return;
+      }
+
+      // Adicionar o novo usuário
+      const novoUsuario = {
+        nick: nick,
+        email: email,
+        senha: senha,
+        dataEntrada: new Date().toLocaleString(),
+        token: gerarToken()
+      };
+
+      usuariosRegistrados.push(novoUsuario);
+      localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
+      alert('Registro realizado com sucesso!');
+      document.getElementById('campo-registro').style.display = 'none';
+      mostrarCampoLogin();
+    }
+
+    // Função para gerar token aleatório
+    function gerarToken() {
+      return Math.random().toString(36).substring(2, 15);
+    }
+
     // Função para mostrar o campo de login
     function mostrarCampoLogin() {
       document.getElementById('campo-login').style.display = 'block';
-      document.querySelector('button').style.display = 'none';
+      document.getElementById('campo-registro').style.display = 'none';
       document.getElementById('bem-vindo').style.display = 'none';
     }
 
     // Função para login
     function login() {
-      const email = document.getElementById('email-usuario').value.trim().toLowerCase();
-      const senha = document.getElementById('senha-usuario').value.trim();
+      const nick = document.getElementById('nick-usuario-login').value.trim();
+      const senha = document.getElementById('senha-usuario-login').value.trim();
       const mensagemErro = document.getElementById('mensagem-erro');
 
-      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.email === email);
+      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.nick === nick);
 
       if (usuarioExistente && usuarioExistente.senha === senha) {
-        localStorage.setItem('usuarioLogado', JSON.stringify(usuarioExistente));
         iniciarPaginaProdutos();
       } else {
-        mensagemErro.textContent = 'Email ou senha incorretos!';
-        mensagemErro.style.display = 'block';
-      }
-    }
-
-    // Função para mostrar a tela de "Esqueci a senha"
-    function mostrarEsqueciSenha() {
-      document.getElementById('campo-login').style.display = 'none';
-      document.getElementById('campo-recuperar-senha').style.display = 'block';
-    }
-
-    // Função para validar o token
-    function validarToken() {
-      const email = document.getElementById('email-recuperar').value.trim().toLowerCase();
-      const token = document.getElementById('token-recuperar').value.trim();
-      const mensagemErro = document.getElementById('mensagem-token');
-
-      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.email === email);
-
-      if (!usuarioExistente) {
-        mensagemErro.textContent = 'Email não encontrado!';
-        mensagemErro.style.display = 'block';
-        return;
-      }
-
-      if (token === usuarioExistente.token) {
-        document.getElementById('campo-recuperar-senha').style.display = 'none';
-        document.getElementById('campo-nova-senha').style.display = 'block';
-      } else {
-        tentativasRecuperacao--;
-        if (tentativasRecuperacao <= 0) {
-          mensagemErro.textContent = 'Você excedeu o número de tentativas. Tente novamente em 10 segundos.';
-          mensagemErro.style.display = 'block';
-          iniciarContador();
-        } else {
-          mensagemErro.textContent = `Token incorreto! Tentativas restantes: ${tentativasRecuperacao}`;
-          mensagemErro.style.display = 'block';
-        }
-      }
-    }
-
-    // Função para iniciar o contador de recuperação de senha
-    function iniciarContador() {
-      timer = 10;
-      const contadorDiv = document.getElementById('contador');
-      contadorDiv.textContent = `Tente novamente em ${timer} segundos...`;
-      const intervalo = setInterval(() => {
-        if (timer > 0) {
-          timer--;
-          contadorDiv.textContent = `Tente novamente em ${timer} segundos...`;
-        } else {
-          clearInterval(intervalo);
-          tentativasRecuperacao = 3;
-          document.getElementById('mensagem-token').style.display = 'none';
-        }
-      }, 1000);
-    }
-
-    // Função para atualizar a senha
-    function atualizarSenha() {
-      const novaSenha = document.getElementById('nova-senha').value.trim();
-      const confirmarSenha = document.getElementById('confirmar-senha').value.trim();
-      const mensagemErro = document.getElementById('mensagem-senha');
-
-      if (novaSenha === confirmarSenha) {
-        usuarioLogado.senha = novaSenha;
-        localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-        document.getElementById('campo-nova-senha').style.display = 'none';
-        iniciarPaginaProdutos();
-      } else {
-        mensagemErro.textContent = 'As senhas não coincidem!';
+        mensagemErro.textContent = 'Nick ou senha incorretos!';
         mensagemErro.style.display = 'block';
       }
     }
 
     // Função para iniciar a página de "Produtos Savana Store"
     function iniciarPaginaProdutos() {
-      document.getElementById('bem-vindo').style.display = 'none';
-      document.querySelector('p').style.display = 'none';
-      document.querySelector('button').style.display = 'none';
       document.getElementById('campo-login').style.display = 'none';
-
-      const tituloProdutos = document.createElement('div');
-      tituloProdutos.id = 'titulo-produtos';
-      tituloProdutos.innerHTML = '<h2>Produtos Savana Store</h2>';
-      document.body.appendChild(tituloProdutos);
-
-      // Verifica se o usuário tem permissão de admin
-      if (usuariosEspeciais.includes(usuarioLogado.nome)) {
-        const adminButton = document.createElement('button');
-        adminButton.id = 'admin';
-        adminButton.textContent = 'Registros';
-        adminButton.onclick = mostrarRegistros;
-        document.body.appendChild(adminButton);
-      }
+      document.getElementById('pagina-produtos').style.display = 'block';
     }
 
-    // Função para mostrar os registros de usuários
-    function mostrarRegistros() {
-      const registrosDiv = document.getElementById('registros');
+    // Reset do login a cada 100 anos (aproximadamente)
+    function resetarLogin() {
+      const dataAtual = new Date();
+      const ultimaLimpeza = new Date(localStorage.getItem('ultimaLimpeza') || 0);
+      const anosPassados = (dataAtual - ultimaLimpeza) / (1000 * 60 * 60 * 24 * 365);
       
-      // Alterna a exibição dos registros
-      if (registrosDiv.style.display === 'block') {
-        registrosDiv.style.display = 'none'; // Fecha
-      } else {
-        registrosDiv.style.display = 'block'; // Abre
-        const listaRegistros = document.getElementById('lista-registros');
-        listaRegistros.innerHTML = '';
-
-        usuariosRegistrados.forEach(usuario => {
-          const divRegistro = document.createElement('div');
-          divRegistro.classList.add('registro-item');
-          divRegistro.innerHTML = `
-            <p>Nome: ${usuario.nome}</p>
-            <p>Email: ${usuario.email}</p>
-            <p>Data de entrada: ${usuario.dataEntrada}</p>
-          `;
-
-          // Atribui tag de admin ou dono
-          if (usuariosEspeciais.includes(usuario.nome)) {
-            const tag = document.createElement('p');
-            tag.textContent = usuario.nome === 'italo' ? 'Tag: Dono' : 'Tag: Admin';
-            tag.classList.add(usuario.nome === 'italo' ? 'dono-tag' : 'admin-tag');
-            divRegistro.appendChild(tag);
-          }
-
-          listaRegistros.appendChild(divRegistro);
-        });
+      if (anosPassados >= 100) {
+        localStorage.removeItem('usuariosRegistrados');
+        localStorage.setItem('ultimaLimpeza', dataAtual);
       }
     }
+
+    // Chamar função de reset
+    resetarLogin();
 
   </script>
 </body>
