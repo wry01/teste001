@@ -124,6 +124,8 @@
       padding: 30px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
       z-index: 1000; /* Garante que a aba fique acima do vídeo */
+      width: 80%;
+      max-width: 600px;
     }
 
     /* O fundo para cobrir o restante da tela */
@@ -136,13 +138,6 @@
       background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
       z-index: 999; /* Fica atrás da aba de registro */
       display: none; /* Inicialmente oculto */
-    }
-
-    /* Alinhar os botões lado a lado */
-    .botao-container {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
     }
 
   </style>
@@ -161,6 +156,7 @@
     <!-- Campo para o registro -->
     <div id="fundo-escuro"></div> <!-- Fundo escuro -->
     <div id="campo-registro">
+      <h2>Se Registre</h2>
       <div id="etapa-nick">
         <input type="text" id="nick-usuario" placeholder="Digite seu Nick de Usuário">
         <button onclick="mostrarCampoEmail()">Próximo</button>
@@ -173,13 +169,14 @@
 
       <div id="etapa-senha" style="display:none;">
         <input type="password" id="senha-usuario" placeholder="Digite sua Senha">
-        <button onclick="registrar()">Registrar</button>
+        <button onclick="registrar()">Registrar-se</button>
       </div>
       <p id="mensagem-registro" class="error-message" style="display:none;"></p>
     </div>
 
     <!-- Campo para o login -->
     <div id="campo-login">
+      <h2>Login</h2>
       <input type="text" id="nick-usuario-login" placeholder="Digite seu Nick de Usuário">
       <input type="password" id="senha-usuario-login" placeholder="Digite sua Senha">
       <button onclick="login()">Entrar</button>
@@ -305,30 +302,6 @@
       document.getElementById('campo-login').style.display = 'none';
       document.getElementById('pagina-produtos').style.display = 'block';
       document.getElementById('content').style.display = 'none';  // Esconde o conteúdo
-
-      // Exibir o token e as tags
-      const userTokenElement = document.getElementById('user-token');
-      userTokenElement.textContent = `Token: ${usuarioLogado.token} | Tag: ${usuarioLogado.tag}`;
-    }
-
-    // Função para mostrar registros de login
-    function mostrarRegistros() {
-      const registrosDiv = document.getElementById('registros');
-      registrosDiv.style.display = 'block';
-
-      registrosDiv.innerHTML = '<h2>Registros de Login</h2>';
-
-      usuariosRegistrados.forEach(usuario => {
-        const divRegistro = document.createElement('div');
-        divRegistro.classList.add('registro-item');
-        divRegistro.innerHTML = `  
-          <strong>Nome:</strong> ${usuario.nick} <br>
-          <strong>Email:</strong> ${usuario.email} <br>
-          <strong>Token:</strong> ${usuario.token} <br>
-          <strong>Data/Hora:</strong> ${usuario.dataEntrada} <br>
-        `;
-        registrosDiv.appendChild(divRegistro);
-      });
     }
 
   </script>
