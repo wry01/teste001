@@ -1,9 +1,8 @@
-function login() {
+function entrar() {
     const nomeUsuario = document.getElementById('usuario').value;
-    const senha = document.getElementById('senha').value;
 
-    if (nomeUsuario.trim() === '' || senha.trim() === '') {
-        alert('Por favor, preencha todos os campos.');
+    if (nomeUsuario.trim() === '') {
+        alert('Por favor, insira seu nome de usuário.');
         return;
     }
 
@@ -17,19 +16,19 @@ function mostrarProdutos(categoria) {
 
     const produtos = {
         streaming: [
-            { nome: 'Produto 1', preco: 200, estoque: 10 },
-            { nome: 'Produto 2', preco: 150, estoque: 5 },
-            { nome: 'Produto 3', preco: 120, estoque: 20 }
+            { nome: 'Produto 1', preco: 100, estoque: 5 },
+            { nome: 'Produto 2', preco: 200, estoque: 2 },
+            { nome: 'Produto 3', preco: 300, estoque: 8 }
         ],
         gaming: [
-            { nome: 'Produto 4', preco: 300, estoque: 7 },
-            { nome: 'Produto 5', preco: 350, estoque: 4 },
-            { nome: 'Produto 6', preco: 400, estoque: 15 }
+            { nome: 'Produto 4', preco: 150, estoque: 7 },
+            { nome: 'Produto 5', preco: 250, estoque: 1 },
+            { nome: 'Produto 6', preco: 350, estoque: 10 }
         ],
         discord: [
-            { nome: 'Produto 7', preco: 50, estoque: 50 },
-            { nome: 'Produto 8', preco: 75, estoque: 25 },
-            { nome: 'Produto 9', preco: 100, estoque: 30 }
+            { nome: 'Produto 7', preco: 50, estoque: 20 },
+            { nome: 'Produto 8', preco: 150, estoque: 5 },
+            { nome: 'Produto 9', preco: 250, estoque: 15 }
         ]
     };
 
@@ -43,3 +42,11 @@ function mostrarProdutos(categoria) {
         produtosContainer.appendChild(produtoDiv);
     });
 }
+
+// Inicia a música automaticamente
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('background-music');
+    audio.play().catch(() => {
+        console.log('Autoplay bloqueado pelo navegador. Clique na página para ativar o áudio.');
+    });
+});
