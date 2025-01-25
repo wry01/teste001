@@ -1,1 +1,8 @@
+.terms-content {
+    max-height: 500px; /* Defina a altura máxima que o bloco pode ter */
+    overflow-y: auto;  /* Habilita a rolagem vertical */
+    padding-right: 10px; /* Ajuste para adicionar algum espaço para a rolagem */
+    border: 1px solid #ddd; /* Uma borda opcional */
+    margin-bottom: 20px; /* Espaço no final do bloco */
+}
 
