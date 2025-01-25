@@ -1,116 +1,31 @@
-/* Fundo animado */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: white;
-    background: url('https://cdn.discordapp.com/attachments/1332174949665865880/1332349991091572777/1.png?ex=6794ef1f&is=67939d9f&hm=7802a2b2e90bef855257f2749ee1bdcbdb1aa66efd5d999702c06e6e78eaa12c&') no-repeat center center fixed;
-    background-size: cover;
-    overflow: hidden;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 1;
-}
-
-.register-container {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-}
-
-.register-container input {
-    display: block;
-    width: 80%;
-    margin: 10px auto;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-}
-
-.register-container button {
-    padding: 10px 20px;
-    background-color: #8a2be2;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.register-container button:hover {
-    background-color: #4b0082;
-}
-
-.store-container {
-    display: none;
-    padding: 20px;
-}
-
-header {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-nav a {
-    margin: 0 15px;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-footer {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.produtos-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+/* Estilo geral do corpo */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
+    display: flex;
+    justify-content: center; /* Alinha o conteúdo horizontalmente no centro */
+    align-items: center; /* Alinha o conteúdo verticalmente no centro */
+    height: 100vh; /* Faz a altura do body ser 100% da altura da tela */
+    flex-direction: column; /* Organiza os elementos na direção vertical */
+    text-align: center; /* Alinha o texto ao centro */
 }
 
 header {
     background-color: #333;
     color: #fff;
     padding: 20px;
-    text-align: center;
+    width: 100%;
 }
 
 .banner-container {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 20px;
-    gap: 20px;
+    justify-content: center; /* Centraliza os banners horizontalmente */
+    align-items: center; /* Alinha os banners verticalmente */
+    flex-direction: column; /* Organiza os banners na direção vertical */
+    gap: 20px; /* Espaço entre os banners */
 }
 
 .banner {
@@ -139,7 +54,7 @@ footer {
     color: #fff;
     text-align: center;
     padding: 10px;
+    width: 100%;
     position: absolute;
     bottom: 0;
-    width: 100%;
 }
