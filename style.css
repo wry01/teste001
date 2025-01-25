@@ -1,3 +1,39 @@
+body {
+    background: linear-gradient(45deg, #7a3c96, #9b59b6); /* Gradiente roxo */
+    background-size: 400% 400%;
+    animation: gradientAnimation 10s ease infinite; /* Animação do gradiente para um efeito mais dinâmico */
+    height: 100vh; /* Preenche toda a altura da janela */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff; /* Cor do texto para contraste */
+}
+
+/* Adiciona o efeito de ruído sutil no fundo */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.terms-content {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.8); /* Fundo com leve transparência para destacar */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 20px;
+}
+
 .terms-content {
     max-height: 500px; /* Defina a altura máxima que o bloco pode ter */
     overflow-y: auto;  /* Habilita a rolagem vertical */
