@@ -68,31 +68,30 @@
       margin-top: 10px;
     }
 
-    #registros {
+    #campo-registro {
       display: none;
-      background-color: #555;
-      color: white;
-      padding: 20px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 30px;
       border-radius: 10px;
-      margin-top: 20px;
-      width: 80%;
-      max-width: 600px;
+      z-index: 1000;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      width: 80%;
+      max-width: 400px;
     }
 
-    .registro-item {
-      background-color: #666;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-    }
-
-    .admin-tag {
-      color: red;
-    }
-
-    .dono-tag {
-      color: gold;
+    #fundo-escuro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 999;
+      display: none;
     }
 
     .token {
@@ -115,8 +114,12 @@
     <button onclick="mostrarCampoRegistro()">Registrar</button>
     <button onclick="mostrarCampoLogin()">Entrar</button>
 
+    <!-- Fundo escuro -->
+    <div id="fundo-escuro"></div>
+
     <!-- Campo para o registro -->
-    <div id="campo-registro" style="display:none;">
+    <div id="campo-registro">
+      <h2>Registrar-se</h2>
       <input type="text" id="nick-usuario" placeholder="Digite seu Nick de Usuário">
       <input type="email" id="email-usuario" placeholder="Digite seu E-mail">
       <input type="password" id="senha-usuario" placeholder="Digite sua Senha">
@@ -147,7 +150,6 @@
   </video>
 
   <div id="registros"></div>
-  
   <div class="token" id="user-token"></div>
 
   <script>
@@ -155,6 +157,13 @@
     const usuariosEspeciais = ['mickzada', 'italo', 'vitor', 'wry'];
 
     let usuarioLogado = null;
+
+    // Função para mostrar o campo de registro
+    function mostrarCampoRegistro() {
+      document.getElementById('campo-registro').style.display = 'block';
+      document.getElementById('fundo-escuro').style.display = 'block';
+      document.getElementById('content').style.display = 'none';  // Esconde o conteúdo principal
+    }
 
     // Função para registrar o usuário
     function registrar() {
@@ -191,6 +200,7 @@
       localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
       alert('Registro realizado com sucesso!');
       document.getElementById('campo-registro').style.display = 'none';
+      document.getElementById('fundo-escuro').style.display = 'none';
       mostrarCampoLogin();
     }
 
@@ -203,6 +213,7 @@
     function mostrarCampoLogin() {
       document.getElementById('campo-login').style.display = 'block';
       document.getElementById('campo-registro').style.display = 'none';
+      document.getElementById('fundo-escuro').style.display = 'none'; // Esconde o fundo escuro
       document.getElementById('bem-vindo').style.display = 'none';
     }
 
@@ -231,7 +242,7 @@
 
       // Exibir o token e as tags
       const userTokenElement = document.getElementById('user-token');
-      userTokenElement.textContent = Token: ${usuarioLogado.token} | Tag: ${usuarioLogado.tag};
+      userTokenElement.textContent = `Token: ${usuarioLogado.token} | Tag: ${usuarioLogado.tag}`;
     }
 
     // Função para mostrar registros de login
@@ -244,12 +255,12 @@
       usuariosRegistrados.forEach(usuario => {
         const divRegistro = document.createElement('div');
         divRegistro.classList.add('registro-item');
-        divRegistro.innerHTML = 
+        divRegistro.innerHTML = `
           <strong>Nome:</strong> ${usuario.nick} <br>
           <strong>Email:</strong> ${usuario.email} <br>
           <strong>Token:</strong> ${usuario.token} <br>
           <strong>Data/Hora:</strong> ${usuario.dataEntrada} <br>
-        ;
+        `;
         registrosDiv.appendChild(divRegistro);
       });
     }
