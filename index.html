@@ -76,6 +76,22 @@
       margin-top: 20px;
       font-size: 1.5rem;
     }
+
+    /* Estilo para a contagem regressiva */
+    #contador {
+      font-size: 2rem;
+      margin-top: 20px;
+      color: yellow;
+    }
+
+    /* Estilos para o novo título centralizado */
+    #titulo-produtos {
+      font-size: 3rem;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 50px;
+      text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
+    }
   </style>
 </head>
 <body>
@@ -94,9 +110,11 @@
     </div>
   </div>
 
+  <div id="contador" style="display:none;"></div>
+
   <script>
     // Blacklist de usuários proibidos
-    const blacklist = ['admin', 'invasor', 'malicioso'];
+    const blacklist = ['admin', 'invasor', 'malicioso', 'aruan'];
 
     // Função para mostrar o campo de nome
     function mostrarCampoNome() {
@@ -110,9 +128,15 @@
 
       // Verifica se o nome está na blacklist
       if (blacklist.includes(nomeUsuario)) {
-        // Se estiver na blacklist, mostra uma mensagem de erro
-        mensagemErro.textContent = 'Nome proibido! Você não pode acessar o site.';
+        // Se estiver na blacklist, mostra uma mensagem de erro e bloqueia o acesso por 10 segundos
+        mensagemErro.textContent = 'Nome proibido! Você não pode acessar o site. Aguarde 10 segundos ou mude de IP.';
         mensagemErro.style.display = 'block';
+        
+        // Armazena o tempo de bloqueio no localStorage
+        localStorage.setItem('blockTime', Date.now());
+        
+        // Inicia a contagem regressiva
+        iniciarContagemRegressiva();
       } else {
         // Caso o nome não esteja na blacklist, altera o conteúdo da página
         mensagemErro.style.display = 'none';
@@ -126,12 +150,63 @@
         // Alterar o fundo da página para preto
         document.body.style.backgroundColor = '#000000'; // Preto
 
-        // Criar e adicionar a nova seção "Produtos Savana Store"
+        // Criar e adicionar o título "Produtos Savana Store"
+        const tituloProdutos = document.createElement('div');
+        tituloProdutos.id = 'titulo-produtos';
+        tituloProdutos.innerHTML = '<h2>Produtos Savana Store</h2>';
+        document.body.appendChild(tituloProdutos);
+
+        // Adicionar os produtos abaixo do título
         const produtos = document.createElement('div');
         produtos.id = 'produtos';
-        produtos.innerHTML = `<h2>Produtos Savana Store</h2><p>Aqui você encontra os melhores produtos para suas necessidades!</p>`;
+        produtos.innerHTML = '<p>Aqui você encontra os melhores produtos para suas necessidades!</p>';
         document.body.appendChild(produtos);
       }
+    }
+
+    // Função para iniciar a contagem regressiva de 10 segundos
+    function iniciarContagemRegressiva() {
+      let tempoRestante = 10; // 10 segundos
+      const contadorElement = document.getElementById('contador');
+      contadorElement.style.display = 'block';
+
+      // Atualiza a contagem regressiva a cada segundo
+      const intervalo = setInterval(function() {
+        contadorElement.innerHTML = `Aguarde: ${tempoRestante}s`;
+        tempoRestante--;
+
+        if (tempoRestante < 0) {
+          clearInterval(intervalo);
+          // Libera o usuário após a contagem
+          localStorage.removeItem('blockTime');
+          contadorElement.style.display = 'none';
+          alert("Agora você pode tentar novamente!");
+        }
+      }, 1000);
+    }
+
+    // Função para verificar se o tempo de bloqueio expirou
+    function verificarBloqueio() {
+      const blockTime = localStorage.getItem('blockTime');
+      if (blockTime) {
+        const tempoBloqueio = Date.now() - blockTime;
+        if (tempoBloqueio < 10000) {
+          // Se o bloqueio ainda não expirou, inicia a contagem regressiva
+          iniciarContagemRegressiva();
+          return true;
+        } else {
+          // Se o bloqueio expirou, permite a nova tentativa
+          localStorage.removeItem('blockTime');
+          return false;
+        }
+      }
+      return false;
+    }
+
+    // Verifica se o usuário está bloqueado no início
+    if (verificarBloqueio()) {
+      document.getElementById('campo-nome').style.display = 'none';
+      document.querySelector('button').style.display = 'none';
     }
   </script>
 </body>
