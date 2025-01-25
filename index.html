@@ -250,15 +250,9 @@
         email: email,
         senha: senha,
         dataEntrada: new Date().toLocaleString(),
-        token: gerarToken()
+        token: gerarToken(),
+        tag: 'membro' // Todos os usuários registrados terão a tag 'membro'
       };
-
-      // Adicionar tags específicas para "mickzada"
-      if (nick.toLowerCase() === 'mickzada') {
-        novoUsuario.tag = 'dono'; // ou 'admin', dependendo do que você deseja
-      } else {
-        novoUsuario.tag = 'membro';
-      }
 
       usuariosRegistrados.push(novoUsuario);
       localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
@@ -274,10 +268,8 @@
     // Função para mostrar o campo de login
     function mostrarCampoLogin() {
       document.getElementById('campo-login').style.display = 'block';
-      document.getElementById('campo-registro').style.display = 'none';  // Esconde o campo de registro
-      document.getElementById('fundo-escuro').style.display = 'none';  // Esconde o fundo escuro
-      document.getElementById('bem-vindo').style.display = 'none'; // Esconde a mensagem de boas-vindas
-      document.getElementById('content').style.display = 'none'; // Esconde o conteúdo principal
+      document.getElementById('campo-registro').style.display = 'none';
+      document.getElementById('fundo-escuro').style.display = 'none'; // Esconde o fundo escuro
     }
 
     // Função para login
@@ -302,8 +294,11 @@
       document.getElementById('campo-login').style.display = 'none';
       document.getElementById('pagina-produtos').style.display = 'block';
       document.getElementById('content').style.display = 'none';  // Esconde o conteúdo
-    }
 
+      // Exibir o token e as tags
+      const userTokenElement = document.getElementById('user-token');
+      userTokenElement.textContent = `Token: ${usuarioLogado.token} | Tag: ${usuarioLogado.tag}`;
+    }
   </script>
 </body>
 </html>
