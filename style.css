@@ -1,1 +1,75 @@
+/* Estilo geral do corpo */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, #ff5722, #673ab7); /* Gradiente laranja e roxo */
+    color: #fff; /* Cor do texto em branco para contraste */
+    display: flex;
+    justify-content: center; /* Alinha o conteúdo horizontalmente no centro */
+    align-items: center; /* Alinha o conteúdo verticalmente no centro */
+    height: 100vh; /* Faz a altura do body ser 100% da altura da tela */
+    flex-direction: column; /* Organiza os elementos na direção vertical */
+    text-align: center; /* Alinha o texto ao centro */
+    position: relative; /* Para permitir o texto "Savana Store" no fundo */
+}
 
+header {
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo preto transparente para o header */
+    color: #fff;
+    padding: 20px;
+    width: 100%;
+}
+
+.banner-container {
+    display: flex;
+    justify-content: center; /* Centraliza os banners horizontalmente */
+    align-items: center; /* Alinha os banners verticalmente */
+    flex-direction: column; /* Organiza os banners na direção vertical */
+    gap: 20px; /* Espaço entre os banners */
+}
+
+.banner {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.banner img {
+    width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.valor {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff5722;
+    margin: 15px 0;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo preto transparente para o footer */
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+/* Estilo para o texto "Savana Store" no fundo */
+.savana-store {
+    position: absolute;
+    top: 50%; /* Posiciona o texto no meio da tela */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centraliza o texto exatamente no meio */
+    font-size: 80px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.2); /* Cor branca com transparência */
+    letter-spacing: 10px; /* Espaçamento entre as letras */
+    text-transform: uppercase; /* Deixa o texto em maiúsculas */
+    font-family: 'Arial', sans-serif;
+}
