@@ -16,7 +16,6 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      overflow: hidden; /* Impede o overflow quando o vídeo estiver na tela */
     }
 
     #content {
@@ -26,7 +25,6 @@
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
       width: 80%;
       max-width: 600px;
-      z-index: 2;
     }
 
     h1 {
@@ -60,25 +58,16 @@
       margin-top: 10px;
     }
 
-    #video-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-      opacity: 0.5; /* Dá um efeito de transparência ao fundo */
+    #titulo-produtos {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-top: 50px;
+      text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
     }
+
   </style>
 </head>
 <body>
-  <!-- Vídeo de fundo -->
-  <video id="video-background" autoplay muted loop>
-    <source src="file:///C:/Users/davif/Documents/V%C3%ADdeo%20do%20WhatsApp%20de%202025-01-25%20%C3%A0(s)%2018.43.23_ca511691.mp4" type="video/mp4">
-    Seu navegador não suporta vídeos.
-  </video>
-
   <div id="content">
     <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
@@ -94,8 +83,6 @@
       <p id="mensagem-erro" class="error-message" style="display:none;"></p>
     </div>
   </div>
-
-  <div id="contador" style="display:none;"></div>
 
   <script>
     // Lista de usuários registrados
@@ -125,7 +112,7 @@
         if (usuarioLogado.nome === nomeUsuario && usuarioLogado.senha === senhaUsuario) {
           // Se a senha estiver correta, mantém o usuário logado
           localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-          iniciarVideoFundo();
+          iniciarPaginaProdutos();
         } else {
           mensagemErro.textContent = 'Senha incorreta!';
           mensagemErro.style.display = 'block';
@@ -141,7 +128,7 @@
         if (usuarioExistente.senha === senhaUsuario) {
           // Se a senha estiver correta, mantém o usuário logado
           localStorage.setItem('usuarioLogado', JSON.stringify(usuarioExistente));
-          iniciarVideoFundo();
+          iniciarPaginaProdutos();
         } else {
           mensagemErro.textContent = 'Senha incorreta!';
           mensagemErro.style.display = 'block';
@@ -158,26 +145,26 @@
 
         // Registra o novo usuário como logado
         localStorage.setItem('usuarioLogado', JSON.stringify(novoUsuario));
-        iniciarVideoFundo();
+        iniciarPaginaProdutos();
       }
     }
 
-    // Função para iniciar o vídeo de fundo
-    function iniciarVideoFundo() {
+    // Função para alterar para a página de "Produtos Savana Store"
+    function iniciarPaginaProdutos() {
       // Esconde o conteúdo de login
       document.getElementById('bem-vindo').style.display = 'none';
       document.querySelector('p').style.display = 'none';
       document.querySelector('button').style.display = 'none';
       document.getElementById('campo-nome').style.display = 'none';
 
-      // Inicia o vídeo de fundo
-      const video = document.getElementById('video-background');
-      video.play();
-      video.onended = function () {
-        // Quando o vídeo terminar, reinicia o vídeo
-        video.currentTime = 0;
-        video.play();
-      };
+      // Muda o fundo para preto
+      document.body.style.backgroundColor = '#000000';
+
+      // Cria e exibe o título de produtos
+      const tituloProdutos = document.createElement('div');
+      tituloProdutos.id = 'titulo-produtos';
+      tituloProdutos.innerHTML = '<h2>Produtos Savana Store</h2>';
+      document.body.appendChild(tituloProdutos);
     }
   </script>
 </body>
