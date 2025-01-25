@@ -4,14 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meu Site</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Estilos iniciais da página */
+    body {
+      background-color: #6a0dad; /* Roxo */
+      color: white; /* Texto branco */
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 1s, color 1s; /* Transição suave */
+    }
+
+    /* Estilos para o conteúdo */
+    #content {
+      padding: 30px;
+      background-color: #000000; /* Preto */
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Sombra para destaque */
+      width: 80%;
+      max-width: 600px;
+      transition: background-color 1s; /* Transição suave */
+    }
+
+    /* Estilos para o texto */
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    /* Ajuste para garantir que o conteúdo fique legível */
+    p {
+      font-size: 1.2rem;
+    }
+  </style>
 </head>
 <body>
   <div id="content">
     <h1>Bem-vindo ao meu site!</h1>
-    <button onclick="mudarCores()">Mudar Cores</button>
+    <p>O fundo agora está roxo, o texto é branco e o conteúdo é preto, com um toque de contraste.</p>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // Mudança automática das cores ao carregar a página
+    document.addEventListener("DOMContentLoaded", function() {
+      // Quando a página for carregada, muda as cores do fundo para roxo
+      document.body.style.backgroundColor = "#6a0dad"; // Roxo
+      document.body.style.color = "#ffffff"; // Branco para o texto
+
+      // Mudar o fundo do conteúdo para preto
+      const content = document.getElementById("content");
+      content.style.backgroundColor = "#000000"; // Preto
+    });
+  </script>
 </body>
 </html>
