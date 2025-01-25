@@ -18,7 +18,6 @@
       justify-content: center;
       align-items: center;
       transition: background-color 1s, color 1s; /* Transição suave */
-      position: relative;
     }
 
     /* Estilos para o conteúdo */
@@ -30,8 +29,6 @@
       width: 80%;
       max-width: 600px;
       transition: background-color 1s; /* Transição suave */
-      position: relative;
-      z-index: 2;
     }
 
     /* Estilos para o título */
@@ -96,15 +93,17 @@
       text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
     }
 
-    /* Estilo para o vídeo de fundo */
-    #video-fundo {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Faz com que o vídeo cubra toda a tela */
-      z-index: 1; /* Coloca o vídeo atrás do conteúdo */
+    /* Estilo para a lista de usuários */
+    #usuarios-registro {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      text-align: left;
+      padding: 10px;
+      background-color: #222;
+      border-radius: 5px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
@@ -126,15 +125,12 @@
 
   <div id="contador" style="display:none;"></div>
 
-  <!-- Adicionando o vídeo como fundo -->
-  <video id="video-fundo" autoplay muted loop>
-    <source src="file:///C:/Users/davif/Downloads/VID-20250124-WA00121.mp4" type="video/mp4">
-    Seu navegador não suporta o formato de vídeo.
-  </video>
-
   <script>
     // Blacklist de usuários proibidos
     const blacklist = ['admin', 'invasor', 'malicioso', 'aruan'];
+
+    // Lista de usuários com acesso ao registro
+    const usuariosComAcesso = ['mickzada', 'italo', 'vitor', 'wry'];
 
     // Função para mostrar o campo de nome
     function mostrarCampoNome() {
@@ -142,7 +138,7 @@
     }
 
     // Função para verificar se o nome está na blacklist
-    function verificarNome() {
+    async function verificarNome() {
       const nomeUsuario = document.getElementById('nome-usuario').value.trim().toLowerCase(); // Captura o nome e converte para minúsculo
       const mensagemErro = document.getElementById('mensagem-erro');
 
@@ -158,6 +154,14 @@
         // Inicia a contagem regressiva
         iniciarContagemRegressiva();
       } else {
+        // Verifica o IP do usuário para o nome "Mickzada"
+        const ipUsuario = await obterIpUsuario();
+        if (nomeUsuario === 'mickzada' && ipUsuario !== '192.168.100.199') {
+          mensagemErro.textContent = 'Este nome só pode ser usado pelo IP 192.168.100.199.';
+          mensagemErro.style.display = 'block';
+          return;
+        }
+
         // Caso o nome não esteja na blacklist, altera o conteúdo da página
         mensagemErro.style.display = 'none';
 
@@ -181,6 +185,17 @@
         produtos.id = 'produtos';
         produtos.innerHTML = '<p>Aqui você encontra os melhores produtos para suas necessidades!</p>';
         document.body.appendChild(produtos);
+
+        // Adicionar o botão de registro se o usuário tem acesso
+        if (usuariosComAcesso.includes(nomeUsuario)) {
+          const botaoRegistro = document.createElement('button');
+          botaoRegistro.innerText = 'Ver Registro de Usuários';
+          botaoRegistro.onclick = mostrarRegistro;
+          document.body.appendChild(botaoRegistro);
+        }
+
+        // Registrar o nome do usuário
+        registrarUsuario(nomeUsuario);
       }
     }
 
@@ -221,6 +236,43 @@
         }
       }
       return false;
+    }
+
+    // Função para registrar o nome do usuário
+    function registrarUsuario(nome) {
+      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      usuarios.push(nome);
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
+
+    // Função para exibir o registro de usuários
+    function mostrarRegistro() {
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      const registroDiv = document.createElement('div');
+      registroDiv.id = 'usuarios-registro';
+      registroDiv.innerHTML = '<h3>Registro de Usuários:</h3>';
+      if (usuarios.length > 0) {
+        usuarios.forEach(usuario => {
+          const p = document.createElement('p');
+          p.textContent = usuario;
+          registroDiv.appendChild(p);
+        });
+      } else {
+        registroDiv.innerHTML += '<p>Nenhum usuário registrado ainda.</p>';
+      }
+      document.body.appendChild(registroDiv);
+    }
+
+    // Função para obter o IP do usuário (usando uma API pública)
+    async function obterIpUsuario() {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip; // Retorna o IP do usuário
+      } catch (error) {
+        console.error('Erro ao obter IP:', error);
+        return null; // Retorna null em caso de erro
+      }
     }
 
     // Verifica se o usuário está bloqueado no início
