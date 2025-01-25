@@ -221,10 +221,13 @@
         const anosPassados = (dataAtual - dataEntrada) / (1000 * 60 * 60 * 24 * 365);
 
         if (anosPassados >= 100) {
-          // Redefinir login após 100 anos
-          alert('O login foi redefinido após 100 anos!');
-          usuarioExistente.dataEntrada = dataAtual.toLocaleString();
-          localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
+          // Redefinir todos os registros após 100 anos
+          alert('Todos os registros foram redefinidos após 100 anos! Crie uma nova conta.');
+          localStorage.removeItem('usuariosRegistrados'); // Limpar todos os registros
+          usuariosRegistrados.length = 0; // Limpar a lista em memória
+          document.getElementById('campo-login').style.display = 'none';
+          document.getElementById('campo-registro').style.display = 'block';
+          return;
         }
 
         if (usuarioExistente.senha === senha) {
