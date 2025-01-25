@@ -152,7 +152,6 @@
 
   <script>
     const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
-    const usuariosEspeciais = ['mickzada', 'italo', 'vitor', 'wry'];
 
     let usuarioLogado = null;
 
@@ -180,9 +179,9 @@
         token: gerarToken()
       };
 
-      // Adicionar tags para administradores/donos
-      if (usuariosEspeciais.includes(nick.toLowerCase())) {
-        novoUsuario.tag = 'admin'; // Pode ser 'admin' ou 'dono', conforme o caso
+      // Adicionar tags específicas para "mickzada"
+      if (nick.toLowerCase() === 'mickzada') {
+        novoUsuario.tag = 'dono'; // ou 'admin', dependendo do que você deseja
       } else {
         novoUsuario.tag = 'membro';
       }
@@ -214,31 +213,11 @@
 
       const usuarioExistente = usuariosRegistrados.find(usuario => usuario.nick === nick);
 
-      if (usuarioExistente) {
-        // Verificar se o login foi realizado há mais de 100 anos
-        const dataEntrada = new Date(usuarioExistente.dataEntrada);
-        const dataAtual = new Date();
-        const anosPassados = (dataAtual - dataEntrada) / (1000 * 60 * 60 * 24 * 365);
-
-        if (anosPassados >= 100) {
-          // Redefinir todos os registros após 100 anos
-          alert('Todos os registros foram redefinidos após 100 anos! Crie uma nova conta.');
-          localStorage.removeItem('usuariosRegistrados'); // Limpar todos os registros
-          usuariosRegistrados.length = 0; // Limpar a lista em memória
-          document.getElementById('campo-login').style.display = 'none';
-          document.getElementById('campo-registro').style.display = 'block';
-          return;
-        }
-
-        if (usuarioExistente.senha === senha) {
-          usuarioLogado = usuarioExistente;
-          iniciarPaginaProdutos();
-        } else {
-          mensagemErro.textContent = 'Nick ou senha incorretos!';
-          mensagemErro.style.display = 'block';
-        }
+      if (usuarioExistente && usuarioExistente.senha === senha) {
+        usuarioLogado = usuarioExistente;
+        iniciarPaginaProdutos();
       } else {
-        mensagemErro.textContent = 'Usuário não encontrado!';
+        mensagemErro.textContent = 'Nick ou senha incorretos!';
         mensagemErro.style.display = 'block';
       }
     }
