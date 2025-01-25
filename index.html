@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela de Registro</title>
+    <title>Savana Store</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
             font-family: Arial, sans-serif;
-            background: linear-gradient(45deg, #4b0082, #8a2be2); /* Fundo roxo */
+            background: linear-gradient(45deg, #4b0082, #8a2be2);
             color: white;
         }
         .overlay {
@@ -22,7 +22,6 @@
             justify-content: center;
             align-items: center;
             background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
         }
         .register-container {
             text-align: center;
@@ -33,7 +32,6 @@
         .store-container {
             display: none;
             position: relative;
-            z-index: 1;
         }
         header {
             background: rgba(0, 0, 0, 0.8);
@@ -59,19 +57,18 @@
     </style>
 </head>
 <body>
-    <!-- Tela de Registro -->
     <div class="overlay" id="overlay">
         <div class="register-container">
-            <h2>Crie Sua Conta</h2>
+            <h2>Bem-vindo à Savana Store</h2>
             <input type="text" id="usuario" placeholder="Nome de Usuário">
-            <button onclick="registrar()">Registrar</button>
+            <input type="password" id="senha" placeholder="Senha">
+            <button onclick="login()">Entrar</button>
         </div>
     </div>
 
-    <!-- Tela da Loja -->
     <div class="store-container" id="store-container">
         <header>
-            <h1>Bem-vindo à Loja!</h1>
+            <h1>Savana Store</h1>
             <nav>
                 <a href="javascript:void(0);" onclick="mostrarProdutos('streaming')">Streaming</a>
                 <a href="javascript:void(0);" onclick="mostrarProdutos('gaming')">Gaming</a>
@@ -87,14 +84,15 @@
     </div>
 
     <script>
-        function registrar() {
+        function login() {
             const nomeUsuario = document.getElementById('usuario').value;
-            if (nomeUsuario.trim() === '') {
-                alert('Por favor, insira um nome de usuário.');
+            const senha = document.getElementById('senha').value;
+
+            if (nomeUsuario.trim() === '' || senha.trim() === '') {
+                alert('Por favor, preencha todos os campos.');
                 return;
             }
 
-            // Oculta a tela de registro e mostra a loja
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('store-container').style.display = 'block';
         }
@@ -102,6 +100,34 @@
         function mostrarProdutos(categoria) {
             const produtosContainer = document.getElementById('produtos-container');
             produtosContainer.innerHTML = `<h2>Produtos da categoria: ${categoria}</h2>`;
+
+            const produtos = {
+                streaming: [
+                    { nome: 'Produto 1', preco: 200, estoque: 10 },
+                    { nome: 'Produto 2', preco: 150, estoque: 5 },
+                    { nome: 'Produto 3', preco: 120, estoque: 20 }
+                ],
+                gaming: [
+                    { nome: 'Produto 4', preco: 300, estoque: 7 },
+                    { nome: 'Produto 5', preco: 350, estoque: 4 },
+                    { nome: 'Produto 6', preco: 400, estoque: 15 }
+                ],
+                discord: [
+                    { nome: 'Produto 7', preco: 50, estoque: 50 },
+                    { nome: 'Produto 8', preco: 75, estoque: 25 },
+                    { nome: 'Produto 9', preco: 100, estoque: 30 }
+                ]
+            };
+
+            produtos[categoria].forEach(produto => {
+                const produtoDiv = document.createElement('div');
+                produtoDiv.innerHTML = `
+                    <h3>${produto.nome}</h3>
+                    <p>Preço: R$ ${produto.preco}</p>
+                    <p>Estoque: ${produto.estoque}</p>
+                `;
+                produtosContainer.appendChild(produtoDiv);
+            });
         }
     </script>
 </body>
