@@ -7,8 +7,8 @@
   <style>
     /* Estilos iniciais da página */
     body {
-      background-color: #2e004f; /* Roxo do espaço (escuro) */
-      color: white; /* Texto branco */
+      background-color: #2e004f;
+      color: white;
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
@@ -17,35 +17,23 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: background-color 1s, color 1s; /* Transição suave */
+      transition: background-color 1s, color 1s;
     }
-
-    /* Estilos para o conteúdo */
     #content {
       padding: 30px;
-      background-color: #000000; /* Preto */
+      background-color: #000000;
       border-radius: 15px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Sombra para destaque */
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
       width: 80%;
       max-width: 600px;
-      transition: background-color 1s; /* Transição suave */
     }
-
-    /* Estilos para o título */
     h1 {
       font-size: 2.5rem;
       margin-bottom: 20px;
-      text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7); /* Efeito de sombra no texto */
+      text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
     }
-
-    /* Ajuste para garantir que o conteúdo fique legível */
-    p {
-      font-size: 1.2rem;
-    }
-
-    /* Estilo para o botão */
     button {
-      background-color: #6a0dad; /* Roxo */
+      background-color: #6a0dad;
       color: white;
       border: none;
       padding: 10px 20px;
@@ -54,8 +42,6 @@
       font-size: 16px;
       border-radius: 5px;
     }
-
-    /* Estilo para o campo de entrada */
     input {
       padding: 10px;
       margin-top: 10px;
@@ -63,47 +49,10 @@
       border-radius: 5px;
       border: 1px solid #ccc;
     }
-
-    /* Estilo para a mensagem de erro */
     .error-message {
       color: red;
       font-size: 1rem;
       margin-top: 10px;
-    }
-
-    /* Estilo para a nova área de produtos */
-    #produtos {
-      margin-top: 20px;
-      font-size: 1.5rem;
-    }
-
-    /* Estilo para a contagem regressiva */
-    #contador {
-      font-size: 2rem;
-      margin-top: 20px;
-      color: yellow;
-    }
-
-    /* Estilos para o novo título centralizado */
-    #titulo-produtos {
-      font-size: 3rem;
-      font-weight: bold;
-      text-align: center;
-      margin-top: 50px;
-      text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
-    }
-
-    /* Estilo para a lista de usuários */
-    #usuarios-registro {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      text-align: left;
-      padding: 10px;
-      background-color: #222;
-      border-radius: 5px;
-      width: 80%;
-      max-width: 600px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
@@ -129,10 +78,18 @@
   <script>
     // Lista de usuários registrados
     const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
 
     // Função para mostrar o campo de nome
     function mostrarCampoNome() {
-      document.getElementById('campo-nome').style.display = 'block';
+      if (usuarioLogado) {
+        // Se o usuário estiver logado, exibe apenas o campo para digitar o login
+        document.getElementById('bem-vindo').textContent = `Bem-vindo de volta, ${usuarioLogado.nome}!`;
+        document.getElementById('campo-nome').style.display = 'block';
+        document.querySelector('button').textContent = 'Entrar novamente';
+      } else {
+        document.getElementById('campo-nome').style.display = 'block';
+      }
     }
 
     // Função para registrar ou permitir o login
@@ -141,13 +98,32 @@
       const senhaUsuario = document.getElementById('senha-usuario').value.trim();
       const mensagemErro = document.getElementById('mensagem-erro');
 
+      // Se o usuário estiver logado, só valida o login e senha
+      if (usuarioLogado) {
+        if (usuarioLogado.nome === nomeUsuario && usuarioLogado.senha === senhaUsuario) {
+          // Se a senha estiver correta, mantém o usuário logado
+          localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+          window.location.reload();
+        } else {
+          mensagemErro.textContent = 'Senha incorreta!';
+          mensagemErro.style.display = 'block';
+        }
+        return;
+      }
+
       // Verifica se o nome de usuário já está registrado
       const usuarioExistente = usuariosRegistrados.find(usuario => usuario.nome === nomeUsuario);
 
       if (usuarioExistente) {
-        // Se o nome de usuário já existe, exibe uma mensagem de erro
-        mensagemErro.textContent = 'Nome de usuário já está em uso!';
-        mensagemErro.style.display = 'block';
+        // Verifica se a senha está correta
+        if (usuarioExistente.senha === senhaUsuario) {
+          // Se a senha estiver correta, mantém o usuário logado
+          localStorage.setItem('usuarioLogado', JSON.stringify(usuarioExistente));
+          window.location.reload();
+        } else {
+          mensagemErro.textContent = 'Senha incorreta!';
+          mensagemErro.style.display = 'block';
+        }
       } else {
         // Caso o nome de usuário não exista, registra o novo usuário
         const novoUsuario = {
@@ -158,31 +134,9 @@
         usuariosRegistrados.push(novoUsuario);
         localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
 
-        // Esconde o conteúdo original
-        document.getElementById('bem-vindo').style.display = 'none';
-        document.querySelector('p').style.display = 'none';
-        document.querySelector('button').style.display = 'none';
-        document.getElementById('campo-nome').style.display = 'none';
-
-        // Alterar o fundo da página para preto
-        document.body.style.backgroundColor = '#000000'; // Preto
-
-        // Criar e adicionar o título "Produtos Savana Store"
-        const tituloProdutos = document.createElement('div');
-        tituloProdutos.id = 'titulo-produtos';
-        tituloProdutos.innerHTML = '<h2>Produtos Savana Store</h2>';
-        document.body.appendChild(tituloProdutos);
-
-        // Adicionar os produtos abaixo do título
-        const produtos = document.createElement('div');
-        produtos.id = 'produtos';
-        produtos.innerHTML = '<p>Aqui você encontra os melhores produtos para suas necessidades!</p>';
-        document.body.appendChild(produtos);
-
-        // Exibir uma mensagem de boas-vindas
-        const boasVindas = document.createElement('div');
-        boasVindas.innerHTML = `<p>Bem-vindo, ${nomeUsuario}! Seu registro foi concluído com sucesso.</p>`;
-        document.body.appendChild(boasVindas);
+        // Registra o novo usuário como logado
+        localStorage.setItem('usuarioLogado', JSON.stringify(novoUsuario));
+        window.location.reload();
       }
     }
 
@@ -223,31 +177,6 @@
         }
       }
       return false;
-    }
-
-    // Função para registrar o nome do usuário
-    function registrarUsuario(nome) {
-      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-      usuarios.push(nome);
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-    }
-
-    // Função para exibir o registro de usuários
-    function mostrarRegistro() {
-      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-      const registroDiv = document.createElement('div');
-      registroDiv.id = 'usuarios-registro';
-      registroDiv.innerHTML = '<h3>Registro de Usuários:</h3>';
-      if (usuarios.length > 0) {
-        usuarios.forEach(usuario => {
-          const p = document.createElement('p');
-          p.textContent = usuario;
-          registroDiv.appendChild(p);
-        });
-      } else {
-        registroDiv.innerHTML += '<p>Nenhum usuário registrado ainda.</p>';
-      }
-      document.body.appendChild(registroDiv);
     }
 
     // Verifica se o usuário está bloqueado no início
