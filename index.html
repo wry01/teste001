@@ -65,6 +65,40 @@
       text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
     }
 
+    #admin {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: yellow;
+      text-decoration: underline;
+    }
+
+    #registros {
+      display: none;
+      background-color: #d3d3d3;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .registro-item {
+      background-color: #ffffff;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+
+    .admin-tag {
+      color: red;
+    }
+
+    .dono-tag {
+      color: gold;
+    }
+
   </style>
 </head>
 <body>
@@ -72,7 +106,6 @@
     <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
     
-    <!-- Botão para mostrar o campo de nome -->
     <button onclick="mostrarCampoNome()">Entrar como Usuário</button>
 
     <!-- Campo para o nome do usuário, inicialmente oculto -->
@@ -84,15 +117,22 @@
     </div>
   </div>
 
+  <div id="registros">
+    <h2>Registros de Usuários</h2>
+    <div id="lista-registros"></div>
+  </div>
+
   <script>
     // Lista de usuários registrados
     const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
     const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
 
+    // Usuários especiais
+    const usuariosEspeciais = ['mickzada', 'italo', 'vitor', 'wry'];
+
     // Função para mostrar o campo de nome
     function mostrarCampoNome() {
       if (usuarioLogado) {
-        // Se o usuário estiver logado, exibe apenas o campo para digitar o login
         document.getElementById('bem-vindo').textContent = `Bem-vindo de volta, ${usuarioLogado.nome}!`;
         document.getElementById('campo-nome').style.display = 'block';
         document.querySelector('button').textContent = 'Entrar novamente';
@@ -107,10 +147,9 @@
       const senhaUsuario = document.getElementById('senha-usuario').value.trim();
       const mensagemErro = document.getElementById('mensagem-erro');
 
-      // Se o usuário estiver logado, só valida o login e senha
       if (usuarioLogado) {
+        // Caso o usuário esteja logado, apenas valida o login
         if (usuarioLogado.nome === nomeUsuario && usuarioLogado.senha === senhaUsuario) {
-          // Se a senha estiver correta, mantém o usuário logado
           localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
           iniciarPaginaProdutos();
         } else {
@@ -120,13 +159,10 @@
         return;
       }
 
-      // Verifica se o nome de usuário já está registrado
       const usuarioExistente = usuariosRegistrados.find(usuario => usuario.nome === nomeUsuario);
 
       if (usuarioExistente) {
-        // Verifica se a senha está correta
         if (usuarioExistente.senha === senhaUsuario) {
-          // Se a senha estiver correta, mantém o usuário logado
           localStorage.setItem('usuarioLogado', JSON.stringify(usuarioExistente));
           iniciarPaginaProdutos();
         } else {
@@ -134,38 +170,73 @@
           mensagemErro.style.display = 'block';
         }
       } else {
-        // Caso o nome de usuário não exista, registra o novo usuário
         const novoUsuario = {
           nome: nomeUsuario,
           senha: senhaUsuario,
+          dataEntrada: new Date().toLocaleString(),
         };
 
         usuariosRegistrados.push(novoUsuario);
         localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
-
-        // Registra o novo usuário como logado
         localStorage.setItem('usuarioLogado', JSON.stringify(novoUsuario));
         iniciarPaginaProdutos();
       }
     }
 
-    // Função para alterar para a página de "Produtos Savana Store"
+    // Função para iniciar a página de "Produtos Savana Store"
     function iniciarPaginaProdutos() {
-      // Esconde o conteúdo de login
       document.getElementById('bem-vindo').style.display = 'none';
       document.querySelector('p').style.display = 'none';
       document.querySelector('button').style.display = 'none';
       document.getElementById('campo-nome').style.display = 'none';
 
-      // Muda o fundo para preto
       document.body.style.backgroundColor = '#000000';
 
-      // Cria e exibe o título de produtos
       const tituloProdutos = document.createElement('div');
       tituloProdutos.id = 'titulo-produtos';
       tituloProdutos.innerHTML = '<h2>Produtos Savana Store</h2>';
       document.body.appendChild(tituloProdutos);
+
+      // Verifica se o usuário tem permissão de admin
+      if (usuariosEspeciais.includes(usuarioLogado.nome)) {
+        const adminButton = document.createElement('button');
+        adminButton.id = 'admin';
+        adminButton.textContent = 'Registros';
+        adminButton.onclick = mostrarRegistros;
+        document.body.appendChild(adminButton);
+      }
     }
+
+    // Função para mostrar registros de usuários
+    function mostrarRegistros() {
+      const registrosDiv = document.getElementById('registros');
+      registrosDiv.style.display = 'block';
+      document.body.style.backgroundColor = '#d3d3d3';
+
+      const listaRegistros = document.getElementById('lista-registros');
+      listaRegistros.innerHTML = '';
+
+      usuariosRegistrados.forEach(usuario => {
+        const divRegistro = document.createElement('div');
+        divRegistro.classList.add('registro-item');
+        divRegistro.innerHTML = `
+          <p>Nome: ${usuario.nome}</p>
+          <p>Senha: ${usuario.senha}</p>
+          <p>Data de entrada: ${usuario.dataEntrada}</p>
+        `;
+
+        // Atribui tag de admin ou dono
+        if (usuariosEspeciais.includes(usuario.nome)) {
+          const tag = document.createElement('p');
+          tag.textContent = usuario.nome === 'italo' ? 'Tag: Dono' : 'Tag: Admin';
+          tag.classList.add(usuario.nome === 'italo' ? 'dono-tag' : 'admin-tag');
+          divRegistro.appendChild(tag);
+        }
+
+        listaRegistros.appendChild(divRegistro);
+      });
+    }
+
   </script>
 </body>
 </html>
