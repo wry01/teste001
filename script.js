@@ -1,7 +1,7 @@
 function mudarCores() {
   // Mudar a cor de fundo e a cor do texto
   document.body.style.backgroundColor = '#6a0dad'; // Roxo
-  document.body.style.color = '#ffffff'; // Branco
+  document.body.style.color = '#A020F0'; // Branco
 
   // Estilizar o conteúdo
   const content = document.getElementById('content');
