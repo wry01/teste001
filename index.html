@@ -156,6 +156,18 @@
     let tentativasRecuperacao = 3;
     let timer = 0;
 
+    // Detecta se o dispositivo é mobile ou PC
+    function detectarDispositivo() {
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        document.body.style.fontSize = "14px";  // Ajuste de estilo para dispositivos móveis
+      } else {
+        document.body.style.fontSize = "16px";  // Estilo para PC
+      }
+    }
+
+    // Chama a função para detectar o dispositivo ao carregar a página
+    detectarDispositivo();
+
     // Função para mostrar o campo de registro
     function mostrarCampoRegistro() {
       document.getElementById('campo-registro').style.display = 'block';
@@ -186,6 +198,11 @@
         dataEntrada: new Date().toLocaleString(),
         token: gerarToken()
       };
+
+      // Adiciona a tag de admin para o nick "Mickzada"
+      if (nick.toLowerCase() === "mickzada") {
+        novoUsuario.tag = 'admin';
+      }
 
       usuariosRegistrados.push(novoUsuario);
       localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
@@ -226,6 +243,7 @@
     function iniciarPaginaProdutos() {
       document.getElementById('campo-login').style.display = 'none';
       document.getElementById('pagina-produtos').style.display = 'block';
+      document.getElementById('content').style.display = 'none';  // Esconde o conteúdo
     }
 
     // Reset do login a cada 100 anos (aproximadamente)
@@ -240,7 +258,7 @@
       }
     }
 
-    // Chamar função de reset
+    // Chama função de reset
     resetarLogin();
 
   </script>
