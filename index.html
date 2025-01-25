@@ -54,6 +54,7 @@
       cursor: pointer;
       font-size: 16px;
       border-radius: 5px;
+      margin: 0 10px;
     }
 
     input {
@@ -137,13 +138,25 @@
       display: none; /* Inicialmente oculto */
     }
 
+    /* Alinhar os botões lado a lado */
+    .botao-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
   </style>
 </head>
 <body>
   <div id="content">
-    <button onclick="mostrarCampoRegistro()">Registrar</button> <!-- Botão de registro posicionado no topo -->
     <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
+
+    <!-- Botões lado a lado -->
+    <div class="botao-container">
+      <button onclick="mostrarCampoRegistro()">Registrar-se</button>
+      <button onclick="mostrarCampoLogin()">Login</button>
+    </div>
 
     <!-- Campo para o registro -->
     <div id="fundo-escuro"></div> <!-- Fundo escuro -->
