@@ -25,7 +25,7 @@
       padding: 30px;
       background-color: #000000; /* Preto */
       border-radius: 15px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Sombra para destacar */
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Sombra para destaque */
       width: 80%;
       max-width: 600px;
       transition: background-color 1s; /* Transição suave */
@@ -42,25 +42,78 @@
     p {
       font-size: 1.2rem;
     }
+
+    /* Estilo para o botão */
+    button {
+      background-color: #6a0dad; /* Roxo */
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+
+    /* Estilo para o campo de entrada */
+    input {
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    /* Estilo para a mensagem de erro */
+    .error-message {
+      color: red;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <div id="content">
     <h1>Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
+    
+    <!-- Botão para mostrar o campo de nome -->
+    <button onclick="mostrarCampoNome()">Entrar como Usuário</button>
+
+    <!-- Campo para o nome do usuário, inicialmente oculto -->
+    <div id="campo-nome" style="display:none;">
+      <input type="text" id="nome-usuario" placeholder="Digite seu nome">
+      <button onclick="verificarNome()">Entrar</button>
+      <p id="mensagem-erro" class="error-message" style="display:none;"></p>
+    </div>
   </div>
 
   <script>
-    // Mudança automática das cores ao carregar a página
-    document.addEventListener("DOMContentLoaded", function() {
-      // Quando a página for carregada, muda as cores do fundo para o roxo do espaço
-      document.body.style.backgroundColor = "#2e004f"; // Roxo do espaço
-      document.body.style.color = "#ffffff"; // Branco para o texto
+    // Blacklist de usuários proibidos
+    const blacklist = ['admin', 'invasor', 'malicioso'];
 
-      // Mudar o fundo do conteúdo para preto
-      const content = document.getElementById("content");
-      content.style.backgroundColor = "#000000"; // Preto
-    });
+    // Função para mostrar o campo de nome
+    function mostrarCampoNome() {
+      document.getElementById('campo-nome').style.display = 'block';
+    }
+
+    // Função para verificar se o nome está na blacklist
+    function verificarNome() {
+      const nomeUsuario = document.getElementById('nome-usuario').value.trim().toLowerCase(); // Captura o nome e converte para minúsculo
+      const mensagemErro = document.getElementById('mensagem-erro');
+
+      // Verifica se o nome está na blacklist
+      if (blacklist.includes(nomeUsuario)) {
+        // Se estiver na blacklist, mostra uma mensagem de erro
+        mensagemErro.textContent = 'Nome proibido! Você não pode acessar o site.';
+        mensagemErro.style.display = 'block';
+      } else {
+        // Caso o nome não esteja na blacklist, permite o acesso
+        mensagemErro.style.display = 'none';
+        alert('Bem-vindo, ' + nomeUsuario + '! Você pode acessar o site.');
+        // Aqui você pode redirecionar o usuário para outra página ou mostrar conteúdo específico
+      }
+    }
   </script>
 </body>
 </html>
