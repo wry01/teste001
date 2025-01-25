@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meu Site</title>
   <style>
-    /* Estilos iniciais da página */
     body {
       background-color: #2e004f;
       color: white;
@@ -17,8 +16,9 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: background-color 1s, color 1s;
+      overflow: hidden; /* Impede o overflow quando o vídeo estiver na tela */
     }
+
     #content {
       padding: 30px;
       background-color: #000000;
@@ -26,12 +26,15 @@
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
       width: 80%;
       max-width: 600px;
+      z-index: 2;
     }
+
     h1 {
       font-size: 2.5rem;
       margin-bottom: 20px;
       text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
     }
+
     button {
       background-color: #6a0dad;
       color: white;
@@ -42,6 +45,7 @@
       font-size: 16px;
       border-radius: 5px;
     }
+
     input {
       padding: 10px;
       margin-top: 10px;
@@ -49,14 +53,32 @@
       border-radius: 5px;
       border: 1px solid #ccc;
     }
+
     .error-message {
       color: red;
       font-size: 1rem;
       margin-top: 10px;
     }
+
+    #video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.5; /* Dá um efeito de transparência ao fundo */
+    }
   </style>
 </head>
 <body>
+  <!-- Vídeo de fundo -->
+  <video id="video-background" autoplay muted loop>
+    <source src="file:///C:/Users/davif/Documents/V%C3%ADdeo%20do%20WhatsApp%20de%202025-01-25%20%C3%A0(s)%2018.43.23_ca511691.mp4" type="video/mp4">
+    Seu navegador não suporta vídeos.
+  </video>
+
   <div id="content">
     <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
@@ -103,7 +125,7 @@
         if (usuarioLogado.nome === nomeUsuario && usuarioLogado.senha === senhaUsuario) {
           // Se a senha estiver correta, mantém o usuário logado
           localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-          window.location.reload();
+          iniciarVideoFundo();
         } else {
           mensagemErro.textContent = 'Senha incorreta!';
           mensagemErro.style.display = 'block';
@@ -119,7 +141,7 @@
         if (usuarioExistente.senha === senhaUsuario) {
           // Se a senha estiver correta, mantém o usuário logado
           localStorage.setItem('usuarioLogado', JSON.stringify(usuarioExistente));
-          window.location.reload();
+          iniciarVideoFundo();
         } else {
           mensagemErro.textContent = 'Senha incorreta!';
           mensagemErro.style.display = 'block';
@@ -136,53 +158,26 @@
 
         // Registra o novo usuário como logado
         localStorage.setItem('usuarioLogado', JSON.stringify(novoUsuario));
-        window.location.reload();
+        iniciarVideoFundo();
       }
     }
 
-    // Função para iniciar a contagem regressiva de 10 segundos
-    function iniciarContagemRegressiva() {
-      let tempoRestante = 10; // 10 segundos
-      const contadorElement = document.getElementById('contador');
-      contadorElement.style.display = 'block';
-
-      // Atualiza a contagem regressiva a cada segundo
-      const intervalo = setInterval(function() {
-        contadorElement.innerHTML = `Aguarde: ${tempoRestante}s`;
-        tempoRestante--;
-
-        if (tempoRestante < 0) {
-          clearInterval(intervalo);
-          // Libera o usuário após a contagem
-          localStorage.removeItem('blockTime');
-          contadorElement.style.display = 'none';
-          alert("Agora você pode tentar novamente!");
-        }
-      }, 1000);
-    }
-
-    // Função para verificar se o tempo de bloqueio expirou
-    function verificarBloqueio() {
-      const blockTime = localStorage.getItem('blockTime');
-      if (blockTime) {
-        const tempoBloqueio = Date.now() - blockTime;
-        if (tempoBloqueio < 10000) {
-          // Se o bloqueio ainda não expirou, inicia a contagem regressiva
-          iniciarContagemRegressiva();
-          return true;
-        } else {
-          // Se o bloqueio expirou, permite a nova tentativa
-          localStorage.removeItem('blockTime');
-          return false;
-        }
-      }
-      return false;
-    }
-
-    // Verifica se o usuário está bloqueado no início
-    if (verificarBloqueio()) {
-      document.getElementById('campo-nome').style.display = 'none';
+    // Função para iniciar o vídeo de fundo
+    function iniciarVideoFundo() {
+      // Esconde o conteúdo de login
+      document.getElementById('bem-vindo').style.display = 'none';
+      document.querySelector('p').style.display = 'none';
       document.querySelector('button').style.display = 'none';
+      document.getElementById('campo-nome').style.display = 'none';
+
+      // Inicia o vídeo de fundo
+      const video = document.getElementById('video-background');
+      video.play();
+      video.onended = function () {
+        // Quando o vídeo terminar, reinicia o vídeo
+        video.currentTime = 0;
+        video.play();
+      };
     }
   </script>
 </body>
