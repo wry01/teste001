@@ -50,3 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Autoplay bloqueado pelo navegador. Clique na página para ativar o áudio.');
     });
 });
+// Este script pode ser usado para adicionar interatividade, como troca de banners, etc.
+document.addEventListener("DOMContentLoaded", function () {
+    // Exemplo: Troca de banners ao clicar
+    const banners = document.querySelectorAll('.banner img');
+    
+    banners.forEach((banner, index) => {
+        banner.addEventListener('click', () => {
+            alert(`Você clicou no Banner ${index + 1}`);
+        });
+    });
+});
