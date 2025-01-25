@@ -16,6 +16,7 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      position: relative;
     }
 
     #video-background {
@@ -35,6 +36,7 @@
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
       width: 80%;
       max-width: 600px;
+      position: relative;
     }
 
     h1 {
@@ -60,6 +62,8 @@
       font-size: 16px;
       border-radius: 5px;
       border: 1px solid #ccc;
+      display: block;
+      margin: 10px auto;
     }
 
     .error-message {
@@ -105,6 +109,11 @@
       border-radius: 5px;
       color: white;
     }
+
+    #campo-registro,
+    #campo-login {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -113,19 +122,27 @@
     <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
 
-    <button onclick="mostrarCampoLogin()" style="display:none;">Entrar</button> <!-- Botão de login -->
-  
     <!-- Campo para o registro -->
-    <div id="campo-registro" style="display:none;">
-      <input type="text" id="nick-usuario" placeholder="Digite seu Nick de Usuário">
-      <input type="email" id="email-usuario" placeholder="Digite seu E-mail">
-      <input type="password" id="senha-usuario" placeholder="Digite sua Senha">
-      <button onclick="registrar()">Registrar</button>
+    <div id="campo-registro">
+      <div id="etapa-nick">
+        <input type="text" id="nick-usuario" placeholder="Digite seu Nick de Usuário">
+        <button onclick="mostrarCampoEmail()">Próximo</button>
+      </div>
+
+      <div id="etapa-email" style="display:none;">
+        <input type="email" id="email-usuario" placeholder="Digite seu E-mail">
+        <button onclick="mostrarCampoSenha()">Próximo</button>
+      </div>
+
+      <div id="etapa-senha" style="display:none;">
+        <input type="password" id="senha-usuario" placeholder="Digite sua Senha">
+        <button onclick="registrar()">Registrar</button>
+      </div>
       <p id="mensagem-registro" class="error-message" style="display:none;"></p>
     </div>
 
     <!-- Campo para o login -->
-    <div id="campo-login" style="display:none;">
+    <div id="campo-login">
       <input type="text" id="nick-usuario-login" placeholder="Digite seu Nick de Usuário">
       <input type="password" id="senha-usuario-login" placeholder="Digite sua Senha">
       <button onclick="login()">Entrar</button>
@@ -155,10 +172,26 @@
 
     let usuarioLogado = null;
 
-    // Função para mostrar o campo de registro
+    // Função para mostrar o campo de registro (etapa 1 - Nick)
     function mostrarCampoRegistro() {
       document.getElementById('campo-registro').style.display = 'block';
       document.getElementById('content').style.display = 'none'; // Esconde o conteúdo principal
+    }
+
+    function mostrarCampoEmail() {
+      const nick = document.getElementById('nick-usuario').value.trim();
+      if (nick.length > 0) {
+        document.getElementById('etapa-nick').style.display = 'none';
+        document.getElementById('etapa-email').style.display = 'block';
+      }
+    }
+
+    function mostrarCampoSenha() {
+      const email = document.getElementById('email-usuario').value.trim();
+      if (email.length > 0) {
+        document.getElementById('etapa-email').style.display = 'none';
+        document.getElementById('etapa-senha').style.display = 'block';
+      }
     }
 
     // Função para registrar o usuário
