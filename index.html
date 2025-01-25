@@ -18,6 +18,7 @@
       justify-content: center;
       align-items: center;
       transition: background-color 1s, color 1s; /* Transição suave */
+      position: relative;
     }
 
     /* Estilos para o conteúdo */
@@ -29,6 +30,8 @@
       width: 80%;
       max-width: 600px;
       transition: background-color 1s; /* Transição suave */
+      position: relative;
+      z-index: 2;
     }
 
     /* Estilos para o título */
@@ -92,6 +95,17 @@
       margin-top: 50px;
       text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
     }
+
+    /* Estilo para o vídeo de fundo */
+    #video-fundo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Faz com que o vídeo cubra toda a tela */
+      z-index: 1; /* Coloca o vídeo atrás do conteúdo */
+    }
   </style>
 </head>
 <body>
@@ -111,6 +125,12 @@
   </div>
 
   <div id="contador" style="display:none;"></div>
+
+  <!-- Adicionando o vídeo como fundo -->
+  <video id="video-fundo" autoplay muted loop>
+    <source src="file:///C:/Users/davif/Downloads/VID-20250124-WA00121.mp4" type="video/mp4">
+    Seu navegador não suporta o formato de vídeo.
+  </video>
 
   <script>
     // Blacklist de usuários proibidos
