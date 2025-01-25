@@ -15,7 +15,7 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
       transition: background-color 1s, color 1s; /* Transição suave */
     }
@@ -116,19 +116,21 @@
       } else {
         // Caso o nome não esteja na blacklist, altera o conteúdo da página
         mensagemErro.style.display = 'none';
-        // Remover a mensagem de boas-vindas
+
+        // Esconde todo o conteúdo original
         document.getElementById('bem-vindo').style.display = 'none';
+        document.querySelector('p').style.display = 'none';
+        document.querySelector('button').style.display = 'none';
+        document.getElementById('campo-nome').style.display = 'none';
 
-        // Alterar o fundo da página
-        document.body.style.backgroundColor = '#000033'; // Azul escuro cósmico (ajuste conforme preferir)
+        // Alterar o fundo da página para preto
+        document.body.style.backgroundColor = '#000000'; // Preto
 
-        // Atualizar o conteúdo para mostrar "Produtos Savana Store"
+        // Criar e adicionar a nova seção "Produtos Savana Store"
         const produtos = document.createElement('div');
         produtos.id = 'produtos';
         produtos.innerHTML = `<h2>Produtos Savana Store</h2><p>Aqui você encontra os melhores produtos para suas necessidades!</p>`;
         document.body.appendChild(produtos);
-
-        // Opcional: você pode também exibir uma lista de produtos aqui, ou realizar qualquer outra ação
       }
     }
   </script>
