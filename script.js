@@ -1,12 +1,11 @@
-// Exibe o modal assim que a página carregar
-window.onload = function() {
-    var modal = document.getElementById('termosModal');
-    modal.style.display = 'flex';
-    
-    // Quando o usuário clicar em "Concorda e Aceita", o modal será fechado
-    var concordaBtn = document.getElementById('concordaBtn');
-    concordaBtn.onclick = function() {
-        modal.style.display = 'none';
-    };
-};
+function mudarCores() {
+  // Mudar a cor de fundo e a cor do texto
+  document.body.style.backgroundColor = '#6a0dad'; // Roxo
+  document.body.style.color = '#ffffff'; // Branco
 
+  // Estilizar o conteúdo
+  const content = document.getElementById('content');
+  content.style.backgroundColor = '#000000'; // Preto
+  content.style.padding = '20px';
+  content.style.borderRadius = '10px';
+}
