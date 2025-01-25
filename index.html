@@ -117,8 +117,9 @@
 
     <!-- Campo para o nome do usuário, inicialmente oculto -->
     <div id="campo-nome" style="display:none;">
-      <input type="text" id="nome-usuario" placeholder="Digite seu nome">
-      <button onclick="verificarNome()">Entrar</button>
+      <input type="text" id="nome-usuario" placeholder="Digite seu nome de usuário">
+      <input type="password" id="senha-usuario" placeholder="Digite sua senha">
+      <button onclick="registrarOuEntrar()">Entrar</button>
       <p id="mensagem-erro" class="error-message" style="display:none;"></p>
     </div>
   </div>
@@ -126,46 +127,38 @@
   <div id="contador" style="display:none;"></div>
 
   <script>
-    // Blacklist de usuários proibidos
-    const blacklist = ['admin', 'invasor', 'malicioso', 'aruan'];
-
-    // Lista de usuários com acesso ao registro
-    const usuariosComAcesso = ['mickzada', 'italo', 'vitor', 'wry'];
+    // Lista de usuários registrados
+    const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
 
     // Função para mostrar o campo de nome
     function mostrarCampoNome() {
       document.getElementById('campo-nome').style.display = 'block';
     }
 
-    // Função para verificar se o nome está na blacklist
-    async function verificarNome() {
-      const nomeUsuario = document.getElementById('nome-usuario').value.trim().toLowerCase(); // Captura o nome e converte para minúsculo
+    // Função para registrar ou permitir o login
+    function registrarOuEntrar() {
+      const nomeUsuario = document.getElementById('nome-usuario').value.trim().toLowerCase();
+      const senhaUsuario = document.getElementById('senha-usuario').value.trim();
       const mensagemErro = document.getElementById('mensagem-erro');
 
-      // Verifica se o nome está na blacklist
-      if (blacklist.includes(nomeUsuario)) {
-        // Se estiver na blacklist, mostra uma mensagem de erro e bloqueia o acesso por 10 segundos
-        mensagemErro.textContent = 'Nome proibido! Você não pode acessar o site. Aguarde 10 segundos ou mude de IP.';
+      // Verifica se o nome de usuário já está registrado
+      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.nome === nomeUsuario);
+
+      if (usuarioExistente) {
+        // Se o nome de usuário já existe, exibe uma mensagem de erro
+        mensagemErro.textContent = 'Nome de usuário já está em uso!';
         mensagemErro.style.display = 'block';
-        
-        // Armazena o tempo de bloqueio no localStorage
-        localStorage.setItem('blockTime', Date.now());
-        
-        // Inicia a contagem regressiva
-        iniciarContagemRegressiva();
       } else {
-        // Verifica o IP do usuário para o nome "Mickzada"
-        const ipUsuario = await obterIpUsuario();
-        if (nomeUsuario === 'mickzada' && ipUsuario !== '192.168.100.199') {
-          mensagemErro.textContent = 'Este nome só pode ser usado pelo IP 192.168.100.199.';
-          mensagemErro.style.display = 'block';
-          return;
-        }
+        // Caso o nome de usuário não exista, registra o novo usuário
+        const novoUsuario = {
+          nome: nomeUsuario,
+          senha: senhaUsuario,
+        };
 
-        // Caso o nome não esteja na blacklist, altera o conteúdo da página
-        mensagemErro.style.display = 'none';
+        usuariosRegistrados.push(novoUsuario);
+        localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
 
-        // Esconde todo o conteúdo original
+        // Esconde o conteúdo original
         document.getElementById('bem-vindo').style.display = 'none';
         document.querySelector('p').style.display = 'none';
         document.querySelector('button').style.display = 'none';
@@ -186,16 +179,10 @@
         produtos.innerHTML = '<p>Aqui você encontra os melhores produtos para suas necessidades!</p>';
         document.body.appendChild(produtos);
 
-        // Adicionar o botão de registro se o usuário tem acesso
-        if (usuariosComAcesso.includes(nomeUsuario)) {
-          const botaoRegistro = document.createElement('button');
-          botaoRegistro.innerText = 'Ver Registro de Usuários';
-          botaoRegistro.onclick = mostrarRegistro;
-          document.body.appendChild(botaoRegistro);
-        }
-
-        // Registrar o nome do usuário
-        registrarUsuario(nomeUsuario);
+        // Exibir uma mensagem de boas-vindas
+        const boasVindas = document.createElement('div');
+        boasVindas.innerHTML = `<p>Bem-vindo, ${nomeUsuario}! Seu registro foi concluído com sucesso.</p>`;
+        document.body.appendChild(boasVindas);
       }
     }
 
@@ -261,18 +248,6 @@
         registroDiv.innerHTML += '<p>Nenhum usuário registrado ainda.</p>';
       }
       document.body.appendChild(registroDiv);
-    }
-
-    // Função para obter o IP do usuário (usando uma API pública)
-    async function obterIpUsuario() {
-      try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        return data.ip; // Retorna o IP do usuário
-      } catch (error) {
-        console.error('Erro ao obter IP:', error);
-        return null; // Retorna null em caso de erro
-      }
     }
 
     // Verifica se o usuário está bloqueado no início
