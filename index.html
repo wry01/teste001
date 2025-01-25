@@ -68,21 +68,6 @@
       margin-top: 10px;
     }
 
-    #titulo-produtos {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-top: 50px;
-      text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
-    }
-
-    #admin {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: yellow;
-      text-decoration: underline;
-    }
-
     #registros {
       display: none;
       background-color: #555;
@@ -108,6 +93,17 @@
 
     .dono-tag {
       color: gold;
+    }
+
+    .token {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 16px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: white;
     }
   </style>
 </head>
@@ -141,6 +137,7 @@
       <div id="titulo-produtos">
         <h2>Produtos Savana Store</h2>
       </div>
+      <button onclick="mostrarRegistros()">Registros</button>
     </div>
   </div>
 
@@ -149,31 +146,15 @@
     Seu navegador não suporta o formato de vídeo.
   </video>
 
+  <div id="registros"></div>
+  
+  <div class="token" id="user-token"></div>
+
   <script>
     const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
     const usuariosEspeciais = ['mickzada', 'italo', 'vitor', 'wry'];
 
-    let tentativasRecuperacao = 3;
-    let timer = 0;
-
-    // Detecta se o dispositivo é mobile ou PC
-    function detectarDispositivo() {
-      if (/Mobi|Android/i.test(navigator.userAgent)) {
-        document.body.style.fontSize = "14px";  // Ajuste de estilo para dispositivos móveis
-      } else {
-        document.body.style.fontSize = "16px";  // Estilo para PC
-      }
-    }
-
-    // Chama a função para detectar o dispositivo ao carregar a página
-    detectarDispositivo();
-
-    // Função para mostrar o campo de registro
-    function mostrarCampoRegistro() {
-      document.getElementById('campo-registro').style.display = 'block';
-      document.getElementById('campo-login').style.display = 'none';
-      document.getElementById('bem-vindo').style.display = 'none';
-    }
+    let usuarioLogado = null;
 
     // Função para registrar o usuário
     function registrar() {
@@ -199,9 +180,11 @@
         token: gerarToken()
       };
 
-      // Adiciona a tag de admin para o nick "Mickzada"
-      if (nick.toLowerCase() === "mickzada") {
-        novoUsuario.tag = 'admin';
+      // Adicionar tags para administradores/donos
+      if (usuariosEspeciais.includes(nick.toLowerCase())) {
+        novoUsuario.tag = 'admin'; // Pode ser 'admin' ou 'dono', conforme o caso
+      } else {
+        novoUsuario.tag = 'membro';
       }
 
       usuariosRegistrados.push(novoUsuario);
@@ -232,6 +215,7 @@
       const usuarioExistente = usuariosRegistrados.find(usuario => usuario.nick === nick);
 
       if (usuarioExistente && usuarioExistente.senha === senha) {
+        usuarioLogado = usuarioExistente;
         iniciarPaginaProdutos();
       } else {
         mensagemErro.textContent = 'Nick ou senha incorretos!';
@@ -244,22 +228,31 @@
       document.getElementById('campo-login').style.display = 'none';
       document.getElementById('pagina-produtos').style.display = 'block';
       document.getElementById('content').style.display = 'none';  // Esconde o conteúdo
+
+      // Exibir o token e as tags
+      const userTokenElement = document.getElementById('user-token');
+      userTokenElement.textContent = `Token: ${usuarioLogado.token} | Tag: ${usuarioLogado.tag}`;
     }
 
-    // Reset do login a cada 100 anos (aproximadamente)
-    function resetarLogin() {
-      const dataAtual = new Date();
-      const ultimaLimpeza = new Date(localStorage.getItem('ultimaLimpeza') || 0);
-      const anosPassados = (dataAtual - ultimaLimpeza) / (1000 * 60 * 60 * 24 * 365);
-      
-      if (anosPassados >= 100) {
-        localStorage.removeItem('usuariosRegistrados');
-        localStorage.setItem('ultimaLimpeza', dataAtual);
-      }
-    }
+    // Função para mostrar registros de login
+    function mostrarRegistros() {
+      const registrosDiv = document.getElementById('registros');
+      registrosDiv.style.display = 'block';
 
-    // Chama função de reset
-    resetarLogin();
+      registrosDiv.innerHTML = '<h2>Registros de Login</h2>';
+
+      usuariosRegistrados.forEach(usuario => {
+        const divRegistro = document.createElement('div');
+        divRegistro.classList.add('registro-item');
+        divRegistro.innerHTML = `
+          <strong>Nome:</strong> ${usuario.nick} <br>
+          <strong>Email:</strong> ${usuario.email} <br>
+          <strong>Token:</strong> ${usuario.token} <br>
+          <strong>Data/Hora:</strong> ${usuario.dataEntrada} <br>
+        `;
+        registrosDiv.appendChild(divRegistro);
+      });
+    }
 
   </script>
 </body>
