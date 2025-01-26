@@ -11,9 +11,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-image: url('background.jpg'); /* Coloque o caminho do seu fundo */
-            background-size: cover;
+            background: black;
             font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
         }
 
         .overlay {
@@ -24,6 +34,7 @@
             width: 80%;
             max-width: 400px;
             color: white;
+            z-index: 1;
         }
 
         .button {
@@ -55,6 +66,16 @@
     </style>
 </head>
 <body>
+    <video autoplay loop muted id="background-video">
+        <source src="kajsbdbjkçsad.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos HTML5.
+    </video>
+
+    <audio id="background-audio" loop>
+        <source src="som savana.mp3" type="audio/mp3">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+
     <div id="welcome" class="overlay">
         <h1>Bem-vindo à Savana Store!</h1>
         <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
@@ -62,6 +83,13 @@
     </div>
 
     <script>
+        const video = document.getElementById('background-video');
+        const audio = document.getElementById('background-audio');
+
+        video.addEventListener('play', () => {
+            audio.play();
+        });
+
         function showLogin() {
             document.getElementById('welcome').style.display = 'none';
             const loginOverlay = document.createElement('div');
