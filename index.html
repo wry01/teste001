@@ -110,6 +110,54 @@
       width: 80%;
       max-width: 400px;
     }
+
+    /* Elemento para mostrar as tags e token */
+    .user-info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      font-size: 16px;
+    }
+
+    .admin {
+      color: red;
+    }
+
+    .dono {
+      color: black;
+    }
+
+    /* Botão de Registro */
+    #btn-registro {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #6a0dad;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      display: none;
+    }
+
+    /* Estilo da janela de registros */
+    #registro-info {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1001;
+      width: 80%;
+      max-width: 600px;
+      overflow-y: auto;
+    }
   </style>
 </head>
 <body>
@@ -151,6 +199,8 @@
 
   <div id="registros"></div>
 
+  <div id="registro-info"></div>
+
   <script>
     const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
     const usuariosEspeciais = ['mickzada', 'italo', 'vitor', 'wry'];
@@ -159,13 +209,8 @@
 
     // Função para mostrar o campo de login
     function mostrarCampoLogin() {
-      // Esconde o conteúdo principal
       document.getElementById('content').style.display = 'none';  
-      
-      // Exibe o fundo escuro
       document.getElementById('fundo-escuro').style.display = 'block';
-      
-      // Exibe a aba de login
       document.getElementById('campo-login').style.display = 'block';
     }
 
@@ -179,19 +224,58 @@
 
       if (usuarioExistente && usuarioExistente.senha === senha) {
         usuarioLogado = usuarioExistente;
-        alert('Login bem-sucedido!');
-        // Aqui você pode redirecionar ou mostrar outra parte da página
+        mostrarInfoUsuario();
+        mostrarRegistroButton();
+        mostrarCampoRegistro();
       } else {
         mensagemErro.textContent = 'Nick ou senha incorretos!';
         mensagemErro.style.display = 'block';
       }
     }
 
-    // Função para mostrar o campo de registro
-    function mostrarCampoRegistro() {
-      document.getElementById('campo-registro').style.display = 'block';
-      document.getElementById('fundo-escuro').style.display = 'block';
-      document.getElementById('campo-login').style.display = 'none';
+    // Função para mostrar informações do usuário após o login
+    function mostrarInfoUsuario() {
+      const userInfo = document.createElement('div');
+      userInfo.classList.add('user-info');
+
+      let tag = 'membro';
+      if (usuariosEspeciais.includes(usuarioLogado.nick.toLowerCase())) {
+        tag = 'admin';
+      }
+
+      if (usuarioLogado.nick.toLowerCase() === 'mickzada' || usuarioLogado.nick.toLowerCase() === 'italo') {
+        tag = 'dono';
+      }
+
+      userInfo.innerHTML = `
+        <strong>Tag:</strong> <span class="${tag}">${tag}</span><br>
+        <strong>Token:</strong> ${gerarToken()}
+      `;
+
+      document.body.appendChild(userInfo);
+    }
+
+    // Função para gerar token aleatório
+    function gerarToken() {
+      return Math.random().toString(36).substring(2, 15);
+    }
+
+    // Função para mostrar o botão de "Registro"
+    function mostrarRegistroButton() {
+      document.getElementById('btn-registro').style.display = 'block';
+    }
+
+    // Função para mostrar a aba de registros
+    function mostrarRegistroInfo() {
+      const registroInfo = document.getElementById('registro-info');
+      registroInfo.style.display = 'block';
+      registroInfo.innerHTML = `
+        <h2>Registro de Login</h2>
+        <p><strong>Nome:</strong> ${usuarioLogado.nick}</p>
+        <p><strong>Email:</strong> ${usuarioLogado.email}</p>
+        <p><strong>Data/Hora:</strong> ${usuarioLogado.dataEntrada}</p>
+        <p><strong>Token:</strong> ${usuarioLogado.token}</p>
+      `;
     }
 
     // Função para registrar o usuário
@@ -201,7 +285,6 @@
       const senha = document.getElementById('senha-usuario').value.trim();
       const mensagemErro = document.getElementById('mensagem-registro');
 
-      // Verificar se o usuário já está registrado
       const usuarioExistente = usuariosRegistrados.find(usuario => usuario.email === email || usuario.nick === nick);
       if (usuarioExistente) {
         mensagemErro.textContent = 'Usuário ou e-mail já registrado!';
@@ -209,7 +292,6 @@
         return;
       }
 
-      // Adicionar o novo usuário
       const novoUsuario = {
         nick: nick,
         email: email,
@@ -218,9 +300,8 @@
         token: gerarToken()
       };
 
-      // Adicionar tags para administradores/donos
       if (usuariosEspeciais.includes(nick.toLowerCase())) {
-        novoUsuario.tag = 'admin'; // Pode ser 'admin' ou 'dono', conforme o caso
+        novoUsuario.tag = 'admin';
       } else {
         novoUsuario.tag = 'membro';
       }
@@ -229,15 +310,8 @@
       localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
       alert('Registro realizado com sucesso!');
       document.getElementById('campo-registro').style.display = 'none';
-      document.getElementById('fundo-escuro').style.display = 'none';
       mostrarCampoLogin();
     }
-
-    // Função para gerar token aleatório
-    function gerarToken() {
-      return Math.random().toString(36).substring(2, 15);
-    }
-
   </script>
 </body>
 </html>
