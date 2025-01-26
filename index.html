@@ -49,21 +49,18 @@
         }
 
         .button {
-            background-color: #6200ea;
+            background-color: purple;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px;
-            display: inline-block;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
+            display: block;
         }
 
         .button:hover {
-            background-color: #3700b3;
+            background-color: darkviolet;
         }
 
         .input-field {
@@ -94,9 +91,9 @@
     <div id="welcome" class="overlay">
         <h1>Bem-vindo à Savana Store!</h1>
         <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
-        <a class="button" onclick="showLogin()">Entrar</a>
-        <a class="button" onclick="showRegister()">Registrar</a>
-        <a class="button" onclick="forgotPassword()">Esqueci a senha</a>
+        <button class="button" onclick="showLogin()">Entrar</button>
+        <button class="button" onclick="showRegister()">Registrar</button>
+        <button class="button" onclick="forgotPassword()">Esqueci a senha</button>
     </div>
 
     <script>
@@ -104,7 +101,7 @@
         const registeredUsers = { "user1": { token: "HIDHKJ9032KLSAO8D903N", tag: "Comprador", lastUpdate: "2025-01-25" } };
 
         function showLogin() {
-            clearOverlays();
+            document.getElementById('welcome').style.display = 'none';
             const loginOverlay = document.createElement('div');
             loginOverlay.className = 'overlay';
             loginOverlay.id = 'login';
@@ -112,10 +109,10 @@
                 <h2>Login</h2>
                 <input class="input-field" type="text" placeholder="Nickname" id="nickname">
                 <input class="input-field" type="password" placeholder="Senha" id="password">
-                <a class="button" onclick="submitLogin()">Entrar</a>
+                <button class="button" onclick="submitLogin()">Entrar</button>
                 <p class="message" id="login-message"></p>
-                <a class="button" onclick="showRegister()">Registrar</a>
-                <a class="button" onclick="showWelcome()">Voltar</a>
+                <button class="button" onclick="showRegister()">Registrar</button>
+                <button class="button" onclick="goBack()">Voltar</button>
             `;
             document.body.appendChild(loginOverlay);
         }
@@ -130,8 +127,8 @@
                 <input class="input-field" type="text" placeholder="Nome de usuário" id="username">
                 <input class="input-field" type="password" placeholder="Senha" id="reg-password">
                 <input class="input-field" type="email" placeholder="Email" id="email">
-                <a class="button" onclick="submitRegister()">Registrar</a>
-                <a class="button" onclick="showLogin()">Voltar</a>
+                <button class="button" onclick="submitRegister()">Registrar</button>
+                <button class="button" onclick="goBack()">Voltar</button>
             `;
             document.body.appendChild(registerOverlay);
         }
@@ -146,10 +143,15 @@
                 <input class="input-field" type="text" placeholder="Nome de usuário" id="forgot-username">
                 <input class="input-field" type="email" placeholder="Email" id="forgot-email">
                 <input class="input-field" type="text" placeholder="Token" id="forgot-token">
-                <a class="button" onclick="requestNewPassword()">Solicitar Nova Senha</a>
-                <a class="button" onclick="showLogin()">Voltar</a>
+                <button class="button" onclick="requestNewPassword()">Solicitar Nova Senha</button>
+                <button class="button" onclick="goBack()">Voltar</button>
             `;
             document.body.appendChild(forgotOverlay);
+        }
+
+        function goBack() {
+            clearOverlays();
+            document.getElementById('welcome').style.display = 'block';
         }
 
         function submitLogin() {
@@ -196,7 +198,7 @@
                 <h2>Nova Senha</h2>
                 <input class="input-field" type="password" placeholder="Nova senha" id="new-password">
                 <input class="input-field" type="password" placeholder="Confirme a senha" id="confirm-password">
-                <a class="button" onclick="changePassword()">Mudar Senha</a>
+                <button class="button" onclick="changePassword()">Mudar Senha</button>
                 <p class="message" id="password-message"></p>
             `;
             document.body.appendChild(resetOverlay);
@@ -222,12 +224,21 @@
         }
 
         function submitRegister() {
-            alert('Registro enviado!');
-        }
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('reg-password').value;
+            const email = document.getElementById('email').value;
 
-        function showWelcome() {
-            clearOverlays();
-            document.getElementById('welcome').style.display = 'block';
+            if (username && password && email) {
+                registeredUsers[username] = {
+                    token: Math.random().toString(36).substring(2, 18).toUpperCase(),
+                    tag: "Comprador",
+                    lastUpdate: new Date().toISOString().split('T')[0]
+                };
+                alert('Registro concluído! Você pode fazer login agora.');
+                showLogin();
+            } else {
+                alert('Preencha todos os campos para se registrar.');
+            }
         }
     </script>
 </body>
