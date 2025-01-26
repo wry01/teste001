@@ -37,6 +37,17 @@
             z-index: 1;
         }
 
+        .info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
         .button {
             background-color: purple;
             color: white;
@@ -66,15 +77,15 @@
     </style>
 </head>
 <body>
+    <audio id="background-audio" autoplay loop>
+        <source src="som savana.mp3" type="audio/mp3">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+
     <video autoplay loop muted id="background-video">
         <source src="kajsbdbjkçsad.mp4" type="video/mp4">
         Seu navegador não suporta vídeos HTML5.
     </video>
-
-    <audio id="background-audio" loop>
-        <source src="som savana.mp3" type="audio/mp3">
-        Seu navegador não suporta áudio HTML5.
-    </audio>
 
     <div id="welcome" class="overlay">
         <h1>Bem-vindo à Savana Store!</h1>
@@ -83,12 +94,8 @@
     </div>
 
     <script>
-        const video = document.getElementById('background-video');
-        const audio = document.getElementById('background-audio');
-
-        video.addEventListener('play', () => {
-            audio.play();
-        });
+        const blacklist = ["aruan"];
+        const registeredUsers = { "user1": { token: "HIDHKJ9032KLSAO8D903N", tag: "Comprador", lastUpdate: "2025-01-25" } };
 
         function showLogin() {
             document.getElementById('welcome').style.display = 'none';
@@ -100,82 +107,49 @@
                 <input class="input-field" type="text" placeholder="Nickname" id="nickname">
                 <input class="input-field" type="password" placeholder="Senha" id="password">
                 <button class="button" onclick="submitLogin()">Entrar</button>
-                <p>Não tem conta ainda? <button class="button" onclick="showRegister()">Registre-se</button></p>
-                <p><button class="button" onclick="forgotPassword()">Esqueci a senha</button></p>
+                <p class="message" id="login-message"></p>
             `;
             document.body.appendChild(loginOverlay);
         }
 
-        function showRegister() {
-            clearOverlays();
-            const registerOverlay = document.createElement('div');
-            registerOverlay.className = 'overlay';
-            registerOverlay.id = 'register';
-            registerOverlay.innerHTML = `
-                <h2>Registro</h2>
-                <input class="input-field" type="text" placeholder="Nome de usuário" id="username">
-                <input class="input-field" type="password" placeholder="Senha" id="reg-password">
-                <input class="input-field" type="email" placeholder="Email" id="email">
-                <button class="button" onclick="submitRegister()">Registrar</button>
-            `;
-            document.body.appendChild(registerOverlay);
-        }
+        function submitLogin() {
+            const nickname = document.getElementById('nickname').value;
+            const message = document.getElementById('login-message');
 
-        function forgotPassword() {
-            clearOverlays();
-            const forgotOverlay = document.createElement('div');
-            forgotOverlay.className = 'overlay';
-            forgotOverlay.id = 'forgot';
-            forgotOverlay.innerHTML = `
-                <h2>Esqueci a Senha</h2>
-                <input class="input-field" type="text" placeholder="Nome de usuário" id="forgot-username">
-                <input class="input-field" type="email" placeholder="Email" id="forgot-email">
-                <input class="input-field" type="text" placeholder="Token" id="forgot-token">
-                <button class="button" onclick="requestNewPassword()">Solicitar Nova Senha</button>
-            `;
-            document.body.appendChild(forgotOverlay);
-        }
+            if (blacklist.includes(nickname)) {
+                let countdown = 5;
+                message.textContent = `Nome de usuário banido. Tente novamente em ${countdown}s.`;
+                const interval = setInterval(() => {
+                    countdown--;
+                    if (countdown > 0) {
+                        message.textContent = `Nome de usuário banido. Tente novamente em ${countdown}s.`;
+                    } else {
+                        clearInterval(interval);
+                        message.textContent = '';
+                    }
+                }, 1000);
+                return;
+            }
 
-        function requestNewPassword() {
+            if (!registeredUsers[nickname]) {
+                message.textContent = 'Não encontramos nome de usuário com esse nome.';
+                return;
+            }
+
             clearOverlays();
-            const resetOverlay = document.createElement('div');
-            resetOverlay.className = 'overlay';
-            resetOverlay.id = 'reset';
-            resetOverlay.innerHTML = `
-                <h2>Nova Senha</h2>
-                <input class="input-field" type="password" placeholder="Nova senha" id="new-password">
-                <input class="input-field" type="password" placeholder="Confirme a senha" id="confirm-password">
-                <button class="button" onclick="changePassword()">Mudar Senha</button>
-                <p class="message" id="password-message"></p>
+            const userInfo = document.createElement('div');
+            userInfo.className = 'info';
+            userInfo.innerHTML = `
+                <p><strong>Token:</strong> ${registeredUsers[nickname].token}</p>
+                <p><strong>Tag:</strong> ${registeredUsers[nickname].tag}</p>
+                <p><strong>Última atualização:</strong> ${registeredUsers[nickname].lastUpdate}</p>
             `;
-            document.body.appendChild(resetOverlay);
+            document.body.appendChild(userInfo);
         }
 
         function clearOverlays() {
             const overlays = document.querySelectorAll('.overlay');
             overlays.forEach(overlay => overlay.remove());
-        }
-
-        function changePassword() {
-            const newPassword = document.getElementById('new-password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const message = document.getElementById('password-message');
-
-            if (newPassword !== confirmPassword) {
-                message.textContent = 'Senhas não são iguais';
-            } else {
-                message.textContent = '';
-                alert('Senha alterada com sucesso!');
-                clearOverlays();
-            }
-        }
-
-        function submitLogin() {
-            alert('Login enviado!');
-        }
-
-        function submitRegister() {
-            alert('Registro enviado!');
         }
     </script>
 </body>
