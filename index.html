@@ -55,7 +55,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
+            display: block;
         }
 
         .button:hover {
@@ -90,7 +91,9 @@
     <div id="welcome" class="overlay">
         <h1>Bem-vindo à Savana Store!</h1>
         <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
-        <button class="button" onclick="showLogin()">Entre</button>
+        <button class="button" onclick="showLogin()">Entrar</button>
+        <button class="button" onclick="showRegister()">Registrar</button>
+        <button class="button" onclick="forgotPassword()">Esqueci a senha</button>
     </div>
 
     <script>
@@ -108,8 +111,42 @@
                 <input class="input-field" type="password" placeholder="Senha" id="password">
                 <button class="button" onclick="submitLogin()">Entrar</button>
                 <p class="message" id="login-message"></p>
+                <button class="button" onclick="showRegister()">Registrar</button>
+                <button class="button" onclick="forgotPassword()">Esqueci a senha</button>
             `;
             document.body.appendChild(loginOverlay);
+        }
+
+        function showRegister() {
+            clearOverlays();
+            const registerOverlay = document.createElement('div');
+            registerOverlay.className = 'overlay';
+            registerOverlay.id = 'register';
+            registerOverlay.innerHTML = `
+                <h2>Registro</h2>
+                <input class="input-field" type="text" placeholder="Nome de usuário" id="username">
+                <input class="input-field" type="password" placeholder="Senha" id="reg-password">
+                <input class="input-field" type="email" placeholder="Email" id="email">
+                <button class="button" onclick="submitRegister()">Registrar</button>
+                <button class="button" onclick="showLogin()">Voltar</button>
+            `;
+            document.body.appendChild(registerOverlay);
+        }
+
+        function forgotPassword() {
+            clearOverlays();
+            const forgotOverlay = document.createElement('div');
+            forgotOverlay.className = 'overlay';
+            forgotOverlay.id = 'forgot';
+            forgotOverlay.innerHTML = `
+                <h2>Esqueci a Senha</h2>
+                <input class="input-field" type="text" placeholder="Nome de usuário" id="forgot-username">
+                <input class="input-field" type="email" placeholder="Email" id="forgot-email">
+                <input class="input-field" type="text" placeholder="Token" id="forgot-token">
+                <button class="button" onclick="requestNewPassword()">Solicitar Nova Senha</button>
+                <button class="button" onclick="showLogin()">Voltar</button>
+            `;
+            document.body.appendChild(forgotOverlay);
         }
 
         function submitLogin() {
@@ -147,9 +184,42 @@
             document.body.appendChild(userInfo);
         }
 
+        function requestNewPassword() {
+            clearOverlays();
+            const resetOverlay = document.createElement('div');
+            resetOverlay.className = 'overlay';
+            resetOverlay.id = 'reset';
+            resetOverlay.innerHTML = `
+                <h2>Nova Senha</h2>
+                <input class="input-field" type="password" placeholder="Nova senha" id="new-password">
+                <input class="input-field" type="password" placeholder="Confirme a senha" id="confirm-password">
+                <button class="button" onclick="changePassword()">Mudar Senha</button>
+                <p class="message" id="password-message"></p>
+            `;
+            document.body.appendChild(resetOverlay);
+        }
+
         function clearOverlays() {
             const overlays = document.querySelectorAll('.overlay');
             overlays.forEach(overlay => overlay.remove());
+        }
+
+        function changePassword() {
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const message = document.getElementById('password-message');
+
+            if (newPassword !== confirmPassword) {
+                message.textContent = 'Senhas não são iguais';
+            } else {
+                message.textContent = '';
+                alert('Senha alterada com sucesso!');
+                clearOverlays();
+            }
+        }
+
+        function submitRegister() {
+            alert('Registro enviado!');
         }
     </script>
 </body>
