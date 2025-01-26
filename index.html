@@ -1,327 +1,154 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Site</title>
-  <style>
-    body {
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savana Store</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('background.jpg'); /* Coloque o caminho do seu fundo */
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
 
-    #video-background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-    }
+        .overlay {
+            background-color: rgba(50, 50, 50, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            color: white;
+        }
 
-    #content {
-      padding: 30px;
-      background-color: rgba(0, 0, 0, 0.7);
-      border-radius: 15px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-      width: 80%;
-      max-width: 600px;
-    }
+        .button {
+            background-color: purple;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
-    }
+        .button:hover {
+            background-color: darkviolet;
+        }
 
-    button {
-      background-color: #6a0dad;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 20px;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 5px;
-    }
+        .input-field {
+            margin: 10px 0;
+            padding: 10px;
+            width: calc(100% - 20px);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-    input {
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .error-message {
-      color: red;
-      font-size: 1rem;
-      margin-top: 10px;
-    }
-
-    /* Estilo para a aba de login */
-    #campo-login {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
-      padding: 30px;
-      border-radius: 10px;
-      z-index: 1000;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-      width: 80%;
-      max-width: 400px;
-    }
-
-    /* Fundo escuro */
-    #fundo-escuro {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 999;
-      display: none;
-    }
-
-    /* Estilo para o campo de registro */
-    #campo-registro {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
-      padding: 30px;
-      border-radius: 10px;
-      z-index: 1000;
-      width: 80%;
-      max-width: 400px;
-    }
-
-    /* Elemento para mostrar as tags e token */
-    .user-info {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      color: white;
-      font-size: 16px;
-    }
-
-    .admin {
-      color: red;
-    }
-
-    .dono {
-      color: black;
-    }
-
-    /* Botão de Registro */
-    #btn-registro {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #6a0dad;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 5px;
-      display: none;
-    }
-
-    /* Estilo da janela de registros */
-    #registro-info {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
-      padding: 20px;
-      border-radius: 10px;
-      z-index: 1001;
-      width: 80%;
-      max-width: 600px;
-      overflow-y: auto;
-    }
-  </style>
+        .message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-  <div id="content">
-    <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
-    <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
+    <div id="welcome" class="overlay">
+        <h1>Bem-vindo à Savana Store!</h1>
+        <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
+        <button class="button" onclick="showLogin()">Entre</button>
+    </div>
 
-    <button onclick="mostrarCampoLogin()">Entrar</button>
-  </div>
+    <script>
+        function showLogin() {
+            document.getElementById('welcome').style.display = 'none';
+            const loginOverlay = document.createElement('div');
+            loginOverlay.className = 'overlay';
+            loginOverlay.id = 'login';
+            loginOverlay.innerHTML = `
+                <h2>Login</h2>
+                <input class="input-field" type="text" placeholder="Nickname" id="nickname">
+                <input class="input-field" type="password" placeholder="Senha" id="password">
+                <button class="button" onclick="submitLogin()">Entrar</button>
+                <p>Não tem conta ainda? <button class="button" onclick="showRegister()">Registre-se</button></p>
+                <p><button class="button" onclick="forgotPassword()">Esqueci a senha</button></p>
+            `;
+            document.body.appendChild(loginOverlay);
+        }
 
-  <!-- Fundo escuro -->
-  <div id="fundo-escuro"></div>
+        function showRegister() {
+            clearOverlays();
+            const registerOverlay = document.createElement('div');
+            registerOverlay.className = 'overlay';
+            registerOverlay.id = 'register';
+            registerOverlay.innerHTML = `
+                <h2>Registro</h2>
+                <input class="input-field" type="text" placeholder="Nome de usuário" id="username">
+                <input class="input-field" type="password" placeholder="Senha" id="reg-password">
+                <input class="input-field" type="email" placeholder="Email" id="email">
+                <button class="button" onclick="submitRegister()">Registrar</button>
+            `;
+            document.body.appendChild(registerOverlay);
+        }
 
-  <!-- Campo para o login -->
-  <div id="campo-login">
-    <h2>Entrar</h2>
-    <input type="text" id="nick-usuario-login" placeholder="Digite seu Nick de Usuário">
-    <input type="password" id="senha-usuario-login" placeholder="Digite sua Senha">
-    <button onclick="login()">Entrar</button>
-    <p id="mensagem-erro" class="error-message" style="display:none;"></p>
+        function forgotPassword() {
+            clearOverlays();
+            const forgotOverlay = document.createElement('div');
+            forgotOverlay.className = 'overlay';
+            forgotOverlay.id = 'forgot';
+            forgotOverlay.innerHTML = `
+                <h2>Esqueci a Senha</h2>
+                <input class="input-field" type="text" placeholder="Nome de usuário" id="forgot-username">
+                <input class="input-field" type="email" placeholder="Email" id="forgot-email">
+                <input class="input-field" type="text" placeholder="Token" id="forgot-token">
+                <button class="button" onclick="requestNewPassword()">Solicitar Nova Senha</button>
+            `;
+            document.body.appendChild(forgotOverlay);
+        }
 
-    <p>Não tem uma conta ainda? <button onclick="mostrarCampoRegistro()">Registrar-se</button></p>
-  </div>
+        function requestNewPassword() {
+            clearOverlays();
+            const resetOverlay = document.createElement('div');
+            resetOverlay.className = 'overlay';
+            resetOverlay.id = 'reset';
+            resetOverlay.innerHTML = `
+                <h2>Nova Senha</h2>
+                <input class="input-field" type="password" placeholder="Nova senha" id="new-password">
+                <input class="input-field" type="password" placeholder="Confirme a senha" id="confirm-password">
+                <button class="button" onclick="changePassword()">Mudar Senha</button>
+                <p class="message" id="password-message"></p>
+            `;
+            document.body.appendChild(resetOverlay);
+        }
 
-  <!-- Campo para o registro -->
-  <div id="campo-registro">
-    <h2>Registrar-se</h2>
-    <input type="text" id="nick-usuario" placeholder="Digite seu Nick de Usuário">
-    <input type="email" id="email-usuario" placeholder="Digite seu E-mail">
-    <input type="password" id="senha-usuario" placeholder="Digite sua Senha">
-    <button onclick="registrar()">Registrar-se</button>
-    <p id="mensagem-registro" class="error-message" style="display:none;"></p>
-  </div>
+        function clearOverlays() {
+            const overlays = document.querySelectorAll('.overlay');
+            overlays.forEach(overlay => overlay.remove());
+        }
 
-  <video id="video-background" autoplay loop muted>
-    <source src="kajsbdbjkçsad.mp4" type="video/mp4">
-    Seu navegador não suporta o formato de vídeo.
-  </video>
+        function changePassword() {
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const message = document.getElementById('password-message');
 
-  <div id="registros"></div>
+            if (newPassword !== confirmPassword) {
+                message.textContent = 'Senhas não são iguais';
+            } else {
+                message.textContent = '';
+                alert('Senha alterada com sucesso!');
+                clearOverlays();
+            }
+        }
 
-  <div id="registro-info"></div>
+        function submitLogin() {
+            alert('Login enviado!');
+        }
 
-  <script>
-    const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
-    const usuariosEspeciais = ['mickzada', 'italo', 'vitor', 'wry'];
-
-    let usuarioLogado = null;
-
-    // Função para mostrar o campo de login
-    function mostrarCampoLogin() {
-      document.getElementById('content').style.display = 'none';  
-      document.getElementById('fundo-escuro').style.display = 'block';
-      document.getElementById('campo-login').style.display = 'block';
-    }
-
-    // Função para login
-    function login() {
-      const nick = document.getElementById('nick-usuario-login').value.trim();
-      const senha = document.getElementById('senha-usuario-login').value.trim();
-      const mensagemErro = document.getElementById('mensagem-erro');
-
-      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.nick === nick);
-
-      if (usuarioExistente && usuarioExistente.senha === senha) {
-        usuarioLogado = usuarioExistente;
-        mostrarInfoUsuario();
-        mostrarRegistroButton();
-        // Remove o conteúdo da página após login
-        document.getElementById('content').style.display = 'none';
-        document.getElementById('campo-login').style.display = 'none';
-        document.getElementById('campo-registro').style.display = 'none';  
-        document.getElementById('fundo-escuro').style.display = 'block'; // Mantém o fundo visível
-
-        // Salvar a data e hora da última atualização
-        salvarUltimaAtualizacao();
-      } else {
-        mensagemErro.textContent = 'Nick ou senha incorretos!';
-        mensagemErro.style.display = 'block';
-      }
-    }
-
-    // Função para salvar a data e hora da última atualização
-    function salvarUltimaAtualizacao() {
-      const dataAtual = new Date();
-      const dataFormatada = dataAtual.toLocaleString(); // Ex: 25/01/2025 14:35:27
-      localStorage.setItem('ultimaAtualizacao', dataFormatada);
-    }
-
-    // Função para mostrar informações do usuário após o login
-    function mostrarInfoUsuario() {
-      const userInfo = document.createElement('div');
-      userInfo.classList.add('user-info');
-
-      let tag = 'membro';
-      if (usuariosEspeciais.includes(usuarioLogado.nick.toLowerCase())) {
-        tag = 'admin';
-      }
-
-      if (usuarioLogado.nick.toLowerCase() === 'mickzada' || usuarioLogado.nick.toLowerCase() === 'italo') {
-        tag = 'dono';
-      }
-
-      userInfo.innerHTML = `
-        <strong>Tag:</strong> <span class="${tag}">${tag}</span><br>
-        <strong>Token:</strong> ${gerarToken()}
-      `;
-
-      document.body.appendChild(userInfo);
-
-      // Exibir a última atualização
-      const ultimaAtualizacao = localStorage.getItem('ultimaAtualizacao') || 'Nunca';
-      const divUltimaAtualizacao = document.createElement('div');
-      divUltimaAtualizacao.classList.add('user-info');
-      divUltimaAtualizacao.innerHTML = `
-        <strong>Última atualização:</strong> ${ultimaAtualizacao}
-      `;
-      document.body.appendChild(divUltimaAtualizacao);
-    }
-
-    // Função para gerar token aleatório
-    function gerarToken() {
-      return Math.random().toString(36).substring(2, 15);
-    }
-
-    // Função para mostrar o botão de "Registro"
-    function mostrarRegistroButton() {
-      document.getElementById('btn-registro').style.display = 'block';
-    }
-
-    // Função para registrar o usuário
-    function registrar() {
-      const nick = document.getElementById('nick-usuario').value.trim();
-      const email = document.getElementById('email-usuario').value.trim().toLowerCase();
-      const senha = document.getElementById('senha-usuario').value.trim();
-      const mensagemErro = document.getElementById('mensagem-registro');
-
-      const usuarioExistente = usuariosRegistrados.find(usuario => usuario.email === email || usuario.nick === nick);
-      if (usuarioExistente) {
-        mensagemErro.textContent = 'Usuário ou e-mail já registrado!';
-        mensagemErro.style.display = 'block';
-        return;
-      }
-
-      const novoUsuario = {
-        nick: nick,
-        email: email,
-        senha: senha,
-        dataEntrada: new Date().toLocaleString(),
-        token: gerarToken()
-      };
-
-      if (usuariosEspeciais.includes(nick.toLowerCase())) {
-        novoUsuario.tag = 'admin';
-      } else {
-        novoUsuario.tag = 'membro';
-      }
-
-      usuariosRegistrados.push(novoUsuario);
-      localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
-      alert('Registro realizado com sucesso!');
-      document.getElementById('campo-registro').style.display = 'none';
-      mostrarCampoLogin();
-    }
-  </script>
+        function submitRegister() {
+            alert('Registro enviado!');
+        }
+    </script>
 </body>
 </html>
