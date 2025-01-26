@@ -226,7 +226,8 @@
         usuarioLogado = usuarioExistente;
         mostrarInfoUsuario();
         mostrarRegistroButton();
-        mostrarCampoRegistro();
+        // Remove a aba de login
+        document.getElementById('campo-login').style.display = 'none';
       } else {
         mensagemErro.textContent = 'Nick ou senha incorretos!';
         mensagemErro.style.display = 'block';
