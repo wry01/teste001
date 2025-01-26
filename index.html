@@ -231,10 +231,20 @@
         document.getElementById('campo-login').style.display = 'none';
         document.getElementById('campo-registro').style.display = 'none';  
         document.getElementById('fundo-escuro').style.display = 'block'; // Mantém o fundo visível
+
+        // Salvar a data e hora da última atualização
+        salvarUltimaAtualizacao();
       } else {
         mensagemErro.textContent = 'Nick ou senha incorretos!';
         mensagemErro.style.display = 'block';
       }
+    }
+
+    // Função para salvar a data e hora da última atualização
+    function salvarUltimaAtualizacao() {
+      const dataAtual = new Date();
+      const dataFormatada = dataAtual.toLocaleString(); // Ex: 25/01/2025 14:35:27
+      localStorage.setItem('ultimaAtualizacao', dataFormatada);
     }
 
     // Função para mostrar informações do usuário após o login
@@ -257,6 +267,15 @@
       `;
 
       document.body.appendChild(userInfo);
+
+      // Exibir a última atualização
+      const ultimaAtualizacao = localStorage.getItem('ultimaAtualizacao') || 'Nunca';
+      const divUltimaAtualizacao = document.createElement('div');
+      divUltimaAtualizacao.classList.add('user-info');
+      divUltimaAtualizacao.innerHTML = `
+        <strong>Última atualização:</strong> ${ultimaAtualizacao}
+      `;
+      document.body.appendChild(divUltimaAtualizacao);
     }
 
     // Função para gerar token aleatório
