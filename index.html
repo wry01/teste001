@@ -68,6 +68,7 @@
       margin-top: 10px;
     }
 
+    /* Estilo para a aba de login */
     #campo-login {
       display: none;
       position: fixed;
@@ -83,6 +84,7 @@
       max-width: 400px;
     }
 
+    /* Fundo escuro */
     #fundo-escuro {
       position: fixed;
       top: 0;
@@ -94,15 +96,19 @@
       display: none;
     }
 
-    .token {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 16px;
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 5px 10px;
-      border-radius: 5px;
-      color: white;
+    /* Estilo para o campo de registro */
+    #campo-registro {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 10px;
+      z-index: 1000;
+      width: 80%;
+      max-width: 400px;
     }
   </style>
 </head>
@@ -112,38 +118,21 @@
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
 
     <button onclick="mostrarCampoLogin()">Entrar</button>
-
-    <!-- Fundo escuro -->
-    <div id="fundo-escuro"></div>
-
-    <!-- Campo para o login -->
-    <div id="campo-login">
-      <h2>Entrar</h2>
-      <input type="text" id="nick-usuario-login" placeholder="Digite seu Nick de Usuário">
-      <input type="password" id="senha-usuario-login" placeholder="Digite sua Senha">
-      <button onclick="login()">Entrar</button>
-      <p id="mensagem-erro" class="error-message" style="display:none;"></p>
-
-      <p>Você não tem uma conta ainda?</p>
-      <button onclick="mostrarCampoRegistro()">Registrar-se</button>
-    </div>
-
-    <!-- Página de produtos -->
-    <div id="pagina-produtos" style="display:none;">
-      <div id="titulo-produtos">
-        <h2>Produtos Savana Store</h2>
-      </div>
-      <button onclick="mostrarRegistros()">Registros</button>
-    </div>
   </div>
 
-  <video id="video-background" autoplay loop muted>
-    <source src="kajsbdbjkçsad.mp4" type="video/mp4">
-    Seu navegador não suporta o formato de vídeo.
-  </video>
+  <!-- Fundo escuro -->
+  <div id="fundo-escuro"></div>
 
-  <div id="registros"></div>
-  <div class="token" id="user-token"></div>
+  <!-- Campo para o login -->
+  <div id="campo-login">
+    <h2>Entrar</h2>
+    <input type="text" id="nick-usuario-login" placeholder="Digite seu Nick de Usuário">
+    <input type="password" id="senha-usuario-login" placeholder="Digite sua Senha">
+    <button onclick="login()">Entrar</button>
+    <p id="mensagem-erro" class="error-message" style="display:none;"></p>
+
+    <p>Não tem uma conta ainda? <button onclick="mostrarCampoRegistro()">Registrar-se</button></p>
+  </div>
 
   <!-- Campo para o registro -->
   <div id="campo-registro">
@@ -154,6 +143,13 @@
     <button onclick="registrar()">Registrar-se</button>
     <p id="mensagem-registro" class="error-message" style="display:none;"></p>
   </div>
+
+  <video id="video-background" autoplay loop muted>
+    <source src="kajsbdbjkçsad.mp4" type="video/mp4">
+    Seu navegador não suporta o formato de vídeo.
+  </video>
+
+  <div id="registros"></div>
 
   <script>
     const usuariosRegistrados = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
@@ -183,22 +179,12 @@
 
       if (usuarioExistente && usuarioExistente.senha === senha) {
         usuarioLogado = usuarioExistente;
-        iniciarPaginaProdutos();
+        alert('Login bem-sucedido!');
+        // Aqui você pode redirecionar ou mostrar outra parte da página
       } else {
         mensagemErro.textContent = 'Nick ou senha incorretos!';
         mensagemErro.style.display = 'block';
       }
-    }
-
-    // Função para iniciar a página de "Produtos Savana Store"
-    function iniciarPaginaProdutos() {
-      document.getElementById('campo-login').style.display = 'none';
-      document.getElementById('pagina-produtos').style.display = 'block';
-      document.getElementById('content').style.display = 'none';  // Esconde o conteúdo
-
-      // Exibir o token e as tags
-      const userTokenElement = document.getElementById('user-token');
-      userTokenElement.textContent = `Token: ${usuarioLogado.token} | Tag: ${usuarioLogado.tag}`;
     }
 
     // Função para mostrar o campo de registro
