@@ -226,10 +226,11 @@
         usuarioLogado = usuarioExistente;
         mostrarInfoUsuario();
         mostrarRegistroButton();
-        // Remove a aba de login
+        // Remove o conteúdo da página após login
+        document.getElementById('content').style.display = 'none';
         document.getElementById('campo-login').style.display = 'none';
-        document.getElementById('content').style.display = 'none';  // Esconde o conteúdo inicial
-        document.getElementById('campo-registro').style.display = 'none';  // Esconde o campo de registro
+        document.getElementById('campo-registro').style.display = 'none';  
+        document.getElementById('fundo-escuro').style.display = 'block'; // Mantém o fundo visível
       } else {
         mensagemErro.textContent = 'Nick ou senha incorretos!';
         mensagemErro.style.display = 'block';
@@ -266,19 +267,6 @@
     // Função para mostrar o botão de "Registro"
     function mostrarRegistroButton() {
       document.getElementById('btn-registro').style.display = 'block';
-    }
-
-    // Função para mostrar a aba de registros
-    function mostrarRegistroInfo() {
-      const registroInfo = document.getElementById('registro-info');
-      registroInfo.style.display = 'block';
-      registroInfo.innerHTML = `
-        <h2>Registro de Login</h2>
-        <p><strong>Nome:</strong> ${usuarioLogado.nick}</p>
-        <p><strong>Email:</strong> ${usuarioLogado.email}</p>
-        <p><strong>Data/Hora:</strong> ${usuarioLogado.dataEntrada}</p>
-        <p><strong>Token:</strong> ${usuarioLogado.token}</p>
-      `;
     }
 
     // Função para registrar o usuário
