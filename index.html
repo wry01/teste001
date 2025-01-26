@@ -68,7 +68,36 @@
       margin-top: 10px;
     }
 
+    /* Estilo para a aba de login */
     #campo-login {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 10px;
+      z-index: 1000;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      width: 80%;
+      max-width: 400px;
+    }
+
+    /* Fundo escuro */
+    #fundo-escuro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 999;
+      display: none;
+    }
+
+    /* Estilo para o campo de registro */
+    #campo-registro {
       display: none;
       position: fixed;
       top: 50%;
@@ -82,17 +111,7 @@
       max-width: 400px;
     }
 
-    #fundo-escuro {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 999;
-      display: none;
-    }
-
+    /* Elemento para mostrar as tags e token */
     .user-info {
       position: absolute;
       top: 10px;
@@ -109,6 +128,7 @@
       color: black;
     }
 
+    /* Botão de Registro */
     #btn-registro {
       position: fixed;
       bottom: 20px;
@@ -123,6 +143,7 @@
       display: none;
     }
 
+    /* Estilo da janela de registros */
     #registro-info {
       display: none;
       position: fixed;
@@ -144,20 +165,24 @@
     <h1 id="bem-vindo">Bem-vindo à Savana Store!</h1>
     <p>Aqui você encontra de tudo: assinaturas nitradas e muito mais. Venha conferir!</p>
 
-    <button onclick="mostrarCampoLogin()">Login</button>
+    <button onclick="mostrarCampoLogin()">Entrar</button>
   </div>
 
+  <!-- Fundo escuro -->
   <div id="fundo-escuro"></div>
 
+  <!-- Campo para o login -->
   <div id="campo-login">
-    <h2>Login</h2>
+    <h2>Entrar</h2>
     <input type="text" id="nick-usuario-login" placeholder="Digite seu Nick de Usuário">
     <input type="password" id="senha-usuario-login" placeholder="Digite sua Senha">
-    <button onclick="login()">Login</button>
+    <button onclick="login()">Entrar</button>
     <p id="mensagem-erro" class="error-message" style="display:none;"></p>
+
     <p>Não tem uma conta ainda? <button onclick="mostrarCampoRegistro()">Registrar-se</button></p>
   </div>
 
+  <!-- Campo para o registro -->
   <div id="campo-registro">
     <h2>Registrar-se</h2>
     <input type="text" id="nick-usuario" placeholder="Digite seu Nick de Usuário">
@@ -203,6 +228,8 @@
         mostrarRegistroButton();
         // Remove a aba de login
         document.getElementById('campo-login').style.display = 'none';
+        document.getElementById('content').style.display = 'none';  // Esconde o conteúdo inicial
+        document.getElementById('campo-registro').style.display = 'none';  // Esconde o campo de registro
       } else {
         mensagemErro.textContent = 'Nick ou senha incorretos!';
         mensagemErro.style.display = 'block';
@@ -225,13 +252,10 @@
 
       userInfo.innerHTML = `
         <strong>Tag:</strong> <span class="${tag}">${tag}</span><br>
-        <strong>Token:</strong> ${usuarioLogado.token || gerarToken()}
+        <strong>Token:</strong> ${gerarToken()}
       `;
 
       document.body.appendChild(userInfo);
-      // Salva o token para não mudar
-      usuarioLogado.token = usuarioLogado.token || gerarToken();
-      localStorage.setItem('usuariosRegistrados', JSON.stringify(usuariosRegistrados));
     }
 
     // Função para gerar token aleatório
