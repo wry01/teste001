@@ -68,7 +68,7 @@
       margin-top: 10px;
     }
 
-    #campo-registro {
+    #campo-login {
       display: none;
       position: fixed;
       top: 50%;
@@ -117,7 +117,8 @@
     <div id="fundo-escuro"></div>
 
     <!-- Campo para o login -->
-    <div id="campo-login" style="display:none;">
+    <div id="campo-login">
+      <h2>Entrar</h2>
       <input type="text" id="nick-usuario-login" placeholder="Digite seu Nick de Usuário">
       <input type="password" id="senha-usuario-login" placeholder="Digite sua Senha">
       <button onclick="login()">Entrar</button>
@@ -162,8 +163,14 @@
 
     // Função para mostrar o campo de login
     function mostrarCampoLogin() {
+      // Esconde o conteúdo principal
+      document.getElementById('content').style.display = 'none';  
+      
+      // Exibe o fundo escuro
+      document.getElementById('fundo-escuro').style.display = 'block';
+      
+      // Exibe a aba de login
       document.getElementById('campo-login').style.display = 'block';
-      document.getElementById('content').style.display = 'none';  // Esconde o conteúdo principal
     }
 
     // Função para login
